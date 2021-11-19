@@ -1,0 +1,39 @@
+{
+  "name": "koa-wetchat",
+  "version": "0.0.2",
+  "description": "test wechat-public",
+  "main": "dist/index.js",
+  "author": "changlon",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node ./examples/index.ts",
+    "dev": "nodemon -e ts --exec ts-node ./examples/index.ts",
+    "build": "rd /s/q dist && tsc"
+  },
+  "dependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/koa-router": "^7.4.4",
+    "@types/promise": "^7.1.30",
+    "crypto": "^1.0.1",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-promise": "4.2.1",
+    "form-data": "^4.0.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-xml-body": "^2.2.0"
+  },
+  "typings": "typings/index.d.ts",
+  "devDependencies": {
+    "@types/koa": "^2.13.4",
+    "@types/koa-bodyparser": "^4.3.4",
+    "@types/koa-xml-body": "^2.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.2.0",
+    "eslint": "7.12.1",
+    "koa": "^2.13.4",
+    "koa-router": "^10.1.1",
+    "koa-sendfile": "^3.0.0",
+    "typescript": "^4.5.2"
+  }
+}

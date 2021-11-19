@@ -1,0 +1,26 @@
+{
+  "compilerOptions": { 
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "module": "commonjs",   
+      "target": "es6",        
+      "noImplicitAny": false, 
+      "sourceMap": false,     
+      "rootDir":"./src",      
+      "outDir":"./dist",     
+      "watch":false  ,       
+      "baseUrl": ".",
+      "paths": {
+        "*" :[
+          "./node_modules/@types",
+          "./typings/*"
+        ]
+      },
+      "declaration": false,
+      // "declarationDir": "./dist/typings"
+  },
+  "include":[
+      "./src/**/*",
+      "./typings/*"
+  ]
+}

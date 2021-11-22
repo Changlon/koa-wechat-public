@@ -52,9 +52,7 @@ app.listen(3001)
 
 
 
-@[toc](目录)
-
-
+@[TOC](目录)
 
 ## 功能
 ### 1. 微信公众号验证 
@@ -369,25 +367,158 @@ acc
 
 ```js
 
+//菜单在一次微信服务器对接验证中生效
+wechatApp.createMenu({
+     "button":[
+     {	
+          "type":"click",
+          "name":"今日歌曲",
+          "key":"V1001_TODAY_MUSIC"
+      },
+      {
+           "name":"菜单",
+           "sub_button":[
+           {	
+               "type":"view",
+               "name":"搜索",
+               "url":"http://www.soso.com/"
+            },
+            {
+               "type":"click",
+               "name":"赞一下我们",
+               "key":"V1001_GOOD"
+            }]
+       }]
+ })
 ```
 
 
 ### 10. 网页授权获取用户基本信息   
+```wechatApp.oauth(handler) ```
+参数说明:
 
-## 配置
+|参数名|类型|可选|说明|
+|-|-|-|-|
+|handler|Function|否|认证过后接受数据的处理回调函数，当认证完成时会将认证的信息，和koa的Ctx为参数，调用handler|     
 
-## 接口 
-#### wechatApp
-##### .text(pattern:string|regExp,handler:async acc=>any) => wechatApp 
-##### .image(handler:async acc=>any) => wechatApp 
-##### .voice(handler:async acc=>any) => wechatApp 
-##### .video(handler:async acc=>any) => wechatApp 
+示例代码:
+```js
+wechatApp.oauth(async function handler(data,ctx) {  
+    const openid = data.openid 
+    ctx.response.redirect('http://www.baidu.com?openid='+openid)    
+	//可以做其他的一系列需要权限的操作
+})
+```
+## 配置 
+	
+下面是创建实例可传入的完整配置；
+
+微信接口(apiUrl)的配置无需开发者传递，都是在程序中配置写好的。
+
+目前实现的接口数量有限，我非常欢迎有想加入到这个项目中的伙伴和我一起丰富项目的功能！  
+
+```js
+const koaWechatPublicConfig = { 
+    appId:"APPID",
+    appSecret:"APPSECRET",
+    token:"TOKEN",
+    encodingAESKey:"ENCODINGAESKEY",
+    apiDomain :"https://api.weixin.qq.com/", //默认
+    apiUrl: {}, //可以在github仓库中查看已经实现的接口 ,默认不要传入! 
+    miniConfig:{ //相关联的小程序配置，如果你的公众号有弹出小程序的场景那么你可以在这里配置
+        title:"TITLE",
+        appId:"APPID",
+        pagePath:"PAGEPATH",
+        thumbMediaId:"THUMBMEDIAID" 
+    }
+}
+```
+
 
 
 ## 类型
+	
+- 普通消息接受数据字段类型定义
+```typescript
+export type ApplicationCommonContext = {
+    context:WechatApplication,
+    send:Send,
+    material:Material,
+    consumer:Consumer,
+    toUser:string,
+    fromUser:string,
+    msgType:MsgType,
+    createTime:number,
+    msgId:string,
+    content?:string,
+    picUrl?:string,
+    mediaId?:string, 
+    format?:any, 
+    thumbMediaId?:string
+    locX?:number,
+    locY?:number,
+    scale?:number,
+    label?:string,
+    title?:string,
+    desc?:string,
+    url?:string    
+}
+```
+- 普通事件接受数据字段类型定义
+```typescript 
+export type ApplicationEventContext = {
+    context:WechatApplication, 
+    send:Send,
+    material:Material,
+    consumer:Consumer,
+    toUser:string,
+    fromUser:string,
+    createTime:number,
+    msgType:MsgType,
+    scene: SceneType,
+    event:string,
+    eventKey?:string,
+    ticket?:string,
+    menuId?:string
+}
+```
+
+- 消息类型定义
+```typescript
+export const enum MsgType{ 
+    TEXT, // 0
+    IMAGE, // 1
+    VOICE, // 2
+    VIDEO, // 3
+    EVENT,  // 4 
+}
 
 
+```
+
+- 事件类型定义
+
+```typescript
+export const enum EventType {
+    SUBSCRIBE, //0 
+    UNSUBSCRIBE, // 1
+    SCAN , // 2 
+    MENU // 3 
+}
+```
 
 ## 支持
+
+- 欢迎 [issues](https://github.com/Changlon/koa-wechat-public/issues/new) 
+- 作者联系邮箱: changlong.a2@gmail.com
+- 可以给一波 Star !!! 有问题我们一起讨论，一起来完善这个框架
+- 未来: 如果koa版本的库足够成熟，考虑再去适配其他web框架下的库，比如express!
+- 作者最近生活有些拮据，你的支持将会是作者继续创作下去的动力！！！
+
+
+<img src = "https://img-blog.csdnimg.cn/37acc7c4d91d45e4878c0de7e53298cc.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQ2hhbmdsb24=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" height = "300" width = "300" />
+
+
+<img src = "https://img-blog.csdnimg.cn/71a80532a6834a6dbb38553a8cdc9107.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQ2hhbmdsb24=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" height = "300" width = "300" />
 
 

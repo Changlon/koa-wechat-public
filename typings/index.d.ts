@@ -52,7 +52,6 @@ export type Stack = {
     pattern ?:string | RegExp ,
     patternType?: PatternType ,
     eventType ? :EventType 
-    
 }
 
 export type ApplicationCommonContext = {
@@ -215,7 +214,6 @@ export declare class WechatApplication {
     scan(handler :(acc:ApplicationEventContext ) => any):WechatApplication
 
 
-
     /**
      * 公众号菜单事件处理
      * @param handler 
@@ -228,16 +226,14 @@ export declare class WechatApplication {
      * 公众号网页授权信息处理
      * @param handler 
      */
-    oauth(handler:(ctx:{
-      
+    oauth(handler:(oauthData:{
             access_token:string,
             expires_in:number,
             refresh_token:string,
             openid:string,
             scope:string,
             state:string
-      
-    })=>any) :WechatApplication 
+    },ctx:Ctx)=>any) :WechatApplication  
     
 }
 

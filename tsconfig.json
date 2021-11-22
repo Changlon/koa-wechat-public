@@ -10,6 +10,7 @@
       "outDir":"./dist",     
       "watch":false  ,       
       "baseUrl": ".",
+      "allowJs": true,
       "paths": {
         "*" :[
           "./node_modules/@types",

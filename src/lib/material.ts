@@ -40,7 +40,7 @@ export class Material implements MaterialInterface {
       const apiUrl = app.apiUrl
       const accessToken = await app.getAccessToken()
       const url = util.format(apiUrl.uploadTmpFile, app.apiDomain, accessToken, type)
-      if (!accessToken) return
+      if (!accessToken) throw new Error(`Material -- addTmpMaterial:access_token获取失败${accessToken}`)
       // eslint-disable-next-line new-cap
       const form = new formData()
       form.append('file', fs.createReadStream(localPath))
@@ -58,7 +58,7 @@ export class Material implements MaterialInterface {
       const apiUrl = app.apiUrl
       const accessToken = await app.getAccessToken()
       const url = util.format(apiUrl.uploadFile, app.apiDomain, accessToken, type)
-      if (!accessToken) return
+      if (!accessToken) throw new Error(`Material -- addLongTimeMaterial:access_token获取失败${accessToken}`)
       // eslint-disable-next-line new-cap
       const form = new formData()
 
@@ -84,6 +84,12 @@ export class Material implements MaterialInterface {
     }
 
     async removeLongTimeMaterial (mediaId: string): Promise<any> {
-      throw new Error('Method not implemented.')
+      const app = this.app
+      const apiUrl = app.apiUrl
+      const $data = `{"media_id":"${mediaId}"}`
+      const accessToken = await app.getAccessToken()
+      if (!accessToken) throw new Error(`Material -- removeLongTimeMaterial:access_token获取失败${accessToken}`)
+      const url = util.format(apiUrl.removeFile, app.apiDomain, accessToken)
+      return (await axios.post(url,$data)).data
     }
 }

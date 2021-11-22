@@ -1,13 +1,24 @@
 {
-  "name": "koa-wetchat",
-  "version": "0.0.2",
-  "description": "test wechat-public",
+  "name": "koa-wechat-public", 
+  "version": "0.1.0",
+  "description": "一款基于koa的公众号开发中间件",
   "main": "dist/index.js",
   "author": "changlon",
   "license": "MIT",
+  "repository": "https://github.com/Changlon/koa-wechat-public",
+  "keywords": [
+    "koa",
+    "koa-wechat",
+    "koa-middleware",
+    "wechat",
+    "weixin",
+    "微信",
+    "公众号",
+    "微信公众号"
+  ],
   "scripts": {
     "start": "ts-node ./examples/index.ts",
-    "dev": "nodemon -e ts --exec ts-node ./examples/index.ts",
+    "dev": "nodemon -e ts --exec ts-node ./example/oauth.ts",
     "build": "rd /s/q dist && tsc"
   },
   "dependencies": {

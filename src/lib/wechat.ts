@@ -28,8 +28,8 @@ export default class WetchatPublic implements WechatApplication {
     next: Next
     stack: Stack[]
     crypto:CryptoGraphyInterface
-    menuHandler:()=>any
-    oauthHandler:(oauthData:any)=>any
+    menuHandler:()=>Promise<any>
+    oauthHandler:(oauthData:any,ctx:Ctx)=> Promise<any>
 
     constructor (config?:WechatApplicationConfig) {
       if (config) {
@@ -83,30 +83,27 @@ export default class WetchatPublic implements WechatApplication {
           resultCode === signature ? ctx.body = echostr : ctx.body = 'mismatch'
           return this.menuHandler ? await Promise.resolve(this.menuHandler()) : undefined
         }
-
+        
         // 处理网页授权认证
-        this.handleWebPageOauth(code, state)
+        await this.handleWebPageOauth(code,state,ctx)
       }
     }
 
-    async handleWebPageOauth (code:string, state:string):Promise<any> {
+    async handleWebPageOauth (code:string, state:string,ctx:Ctx):Promise<any> {
       const appId = this.appId
       const secret = this.appSecret
       const authuRL = `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${appId}&secret=${secret}&code=${code}&grant_type=authorization_code`
-      const resData = await axios.get(authuRL)
+      const resData = await axios.get(authuRL) 
       const data = resData.status === 200 ? resData.data : undefined
       if (!data) throw new Error(`用户获取token失败！${resData.data.errcode} : ${resData.data.errmsg}`)
       data.state = state
-      return this.oauthHandler ? Promise.resolve(this.oauthHandler(data)) : undefined
+      
+      return this.oauthHandler ? await Promise.resolve(this.oauthHandler(data,ctx)) : ctx.body = "no oauthHandler"
     }
 
     // eslint-disable-next-line camelcase
-    oauth (handler: (ctx: { access_token: string; expires_in: number; refresh_token: string; openid: string; scope: string; state: string }) => any): WechatApplication {
-      const that = this
-      function handler_ (data) {
-        handler.call(this, { data, app: that })
-      }
-      return (this.oauthHandler = handler_) && this
+    oauth (handler: (oauthData: { access_token: string; expires_in: number; refresh_token: string; openid: string; scope: string; state: string },ctx:Ctx) => any): WechatApplication {
+      return (this.oauthHandler = handler) && this
     }
 
     handle (): (ctx:Ctx, next?: Next) => Promise<any> {

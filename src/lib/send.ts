@@ -83,8 +83,8 @@ export default class Send implements SEND.Send {
           return this.push(res)
         }
 
-        async pushVideoCustomerMsg (toUser: string, mediaId: string, thumbMediaId: string, title: string, desc: string): Promise<any> {
-          const $data = '{"touser":"' + toUser + '","msgtype":"video","video":{"media_id":"' + mediaId + '","thumb_media_id":"' + (thumbMediaId || mediaId) + '","title":"' + title + '","description":"' + desc + '"}}'
+        async pushVideoCustomerMsg (toUser: string, mediaId: string, thumbMediaId?: string, title?: string, desc?: string): Promise<any> {
+          const $data = '{"touser":"' + toUser + '","msgtype":"video","video":{"media_id":"' + mediaId + '","thumb_media_id":"' + (thumbMediaId || mediaId) + '","title":"' + (title|| "title") + '","description":"' + (desc||"desc") + '"}}'
           const token = await this.app.getAccessToken()
           if (!token) throw new Error(`Send -- pushVideoCustomerMsg:access_token获取失败${token}`)
           const url = util.format(this.app.apiUrl.accessMessage, this.app.apiDomain, token)
@@ -92,10 +92,18 @@ export default class Send implements SEND.Send {
           return this.push(res)
         }
 
-        async pushMiniProgramCardMsg (toUser: string, params?: { [k: string]: any }, miniConfig?: { title: string; appId: string; pagePath: string; thumbMediaId: string }): Promise<any> {
-          const config = miniConfig || this.app.miniConfig
+        async pushMiniProgramCardMsg (toUser: string,  miniConfig?: { title: string; appId: string; pagePath: string; thumbMediaId: string },params?: { [k: string]: any }): Promise<any> { 
+          
+          const config = miniConfig || this.app.miniConfig 
+          let paramStr =  config.pagePath[config.pagePath.length-1] === '?' ? "" : "?"
+          if(params) {
+            Object.keys(params).forEach(key=>{
+              paramStr = paramStr + `${key} = ${params[key]}&`
+            })
+            paramStr = paramStr.substring(0,paramStr.length-1)
+          }
           if (!config) throw new Error(`Send -- pushMiniProgramCardMsg: 小程序配置信息缺失 --config ${config}`)
-          const $data = `{"touser":"${toUser}","msgtype":"miniprogrampage","miniprogrampage":{"title":"${config.title}","appid":"${config.appId}","pagepath":"${config.pagePath}${params}","thumb_media_id":"${config.thumbMediaId || config.mediaId}"}}`
+          const $data = `{"touser":"${toUser}","msgtype":"miniprogrampage","miniprogrampage":{"title":"${config.title}","appid":"${config.appId}","pagepath":"${config.pagePath}${paramStr}","thumb_media_id":"${config.thumbMediaId || config.mediaId}"}}`
           const token = await this.app.getAccessToken()
           if (!token) throw new Error(`Send -- pushMiniProgramCardMsg:access_token获取失败${token}`)
           const url = util.format(this.app.apiUrl.accessMessage, this.app.apiDomain, token)

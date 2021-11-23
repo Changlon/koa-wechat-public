@@ -1,45 +1,18 @@
-- [ 一款基于Koa的微信公众号开发框架](#head1)
-	- [ koa-wechat](#head2)
-	- [ 介绍](#head3)
-	- [ 安装](#head4)
-	- [ 使用](#head5)
-	- [ 功能](#head6)
-		- [1. 微信公众号验证 ](#head7)
-			- [ 全URL路径验证](#head8)
-			- [结合koa-router 接入验证 ](#head9)
-		- [2. 微信公众号信息加密](#head10)
-		- [3. 获取access_token  ](#head11)
-		- [4. 接收普通消息](#head12)
-			- [ 文本消息的接收.text ](#head13)
-			- [ 图片消息的接收.image](#head14)
-			- [ 语音消息的接收.voice](#head15)
-			- [ 视频消息接收.video ](#head16)
-		- [5. 接收事件推送](#head17)
-			- [ 用户关注公众号.subscribe](#head18)
-			- [ 用户取关公众号.unsubscribe](#head19)
-			- [ 自定义菜单事件推送.menu ](#head20)
-		- [6. 发送消息 & 客服接口](#head21)
-			- [ 自动回复](#head22)
-			- [ 客服消息推送](#head23)
-		- [7. 用户接口](#head24)
-			- [ 获取用户信息](#head25)
-			- [ 上传永久文件](#head26)
-		- [9. 自定义菜单 ](#head27)
-	- [配置 ](#head28)
-	- [ 类型](#head29)
-	- [ 支持](#head30)
-# <span id="head1"> 一款基于Koa的微信公众号开发框架</span>
+#  一款基于Koa的微信公众号开发框架
 ![node version](https://img.shields.io/badge/node-v14.16.1-brightgreen.svg)  ![npm version](https://img.shields.io/badge/npm-0.1.0-blue.svg) ![in npm version](https://img.shields.io/badge/koa-^2.13.4-purple.svg)  ![typescript](https://img.shields.io/badge/typescript-^4.5.2-blue.svg) 
 
-## <span id="head2"> koa-wechat</span>
-## <span id="head3"> 介绍</span>
+## koa-wechat
+## 介绍
 1. koa-wetchat 需要node v7.6.0+ 来支持 ES2015 和 async  
 2. 依赖koa-xml-body 中间件 
 3. 可结合koa-router,也可以直接单当做koa的中间件来使用 
 4. github: [仓库地址](https://github.com/Changlon/koa-wechat-public)
 
 
-## <span id="head4"> 安装</span>
+
+	
+
+## 安装
 - npm
 ```
 $ npm install koa-wechat-public
@@ -50,7 +23,7 @@ $ npm install koa-wechat-public
 $ yarn add koa-wechat-public
 ```
 
-## <span id="head5"> 使用</span>
+##  使用
 
 ```js
 const Koa = require('koa') 
@@ -60,14 +33,14 @@ const app = new Koa()
 
 //配置你的公众号参数
 const wechatApp = new Wetchat({
-token: TOKEN,
-appId: APPID,
-appSecret: APPSECRET
+    token: TOKEN,
+    appId: APPID,
+    appSecret: APPSECRET
 })
 
 //编写一个接受消息的处理器
 wechatApp.text('你好', async acc=>{ 
-acc.send.sendTxtMsg("你也好")
+    acc.send.sendTxtMsg("你也好")
 })
 
 
@@ -81,10 +54,10 @@ app.listen(3001)
 
 @[TOC](目录)
 
-## <span id="head6"> 功能</span>
-### <span id="head7">1. 微信公众号验证 </span>
+## 功能
+### 1. 微信公众号验证 
 
-#### <span id="head8"> 全URL路径验证</span>
+#### 全URL路径验证
 	
 - 首先在微信[微信公众平台](公众平台)配置账号信息,获取需要配置的 APPID，APPSECRET，TOKEN;
 填写你的服务器 URL 如(http://example.com/) 。		   
@@ -93,7 +66,7 @@ app.listen(3001)
 
 上面的例子中```Wetchat```的实例对象(我们下面简称:```wechatApp```) 会自动判断请求的类型，如果是```get```请求则做接入验证，如果是```post```请求则调用对应的处理器执行。
 
-#### <span id="head9">结合koa-router 接入验证 </span>
+#### 结合koa-router 接入验证 
 ```js
 router.all('/wechat',wechat.start()) 
 ```
@@ -106,20 +79,20 @@ router.post('/wechat',wechat.handle())  //处理微信服务器发送的消息
 这时候需要在你的微信公众平台修改服务器URL为 ```http://example.com/wechat```  。
 
 
-### <span id="head10">2. 微信公众号信息加密</span>
+### 2. 微信公众号信息加密
 如果你的微信公众号后台配置的不是明文模式，那么每次微信服务器发送到你服务器上的数据都是加密过后的。这时候```wechatApp```实例会自动判断消息是否是加密的如果是加密模式则会自动解密，并会已加密的模式将数据返回给服务器，无需开发者处理繁琐的加密解密的步骤。
 
 需要在实例时传入 ```encodingAESKey```秘钥串：
 
 ```js
 const wechatApp = new Wetchat({
-token: TOKEN,
-appId: APPID,
-appSecret: APPSECRET,
-encodingAESKey:ENCODINGAESKEY
+    token: TOKEN,
+    appId: APPID,
+    appSecret: APPSECRET,
+    encodingAESKey:ENCODINGAESKEY
 })
 ```
-### <span id="head11">3. 获取access_token  </span>
+### 3. 获取access_token  
 在实例上有一个 ```getAccessToken ```的原型方法。该方法返回一个```Promise<access_token:string> ``` 。
 
 使用示例: 
@@ -127,35 +100,35 @@ encodingAESKey:ENCODINGAESKEY
 ```js
 wechatApp.text('token', async acc=>{ 
 	 const token =  await acc.context.getAccessToken() 
-acc.send.sendTxtMsg(token)		
+         acc.send.sendTxtMsg(token)		
 })
 ```
 在公众号发送 消息:token,返回公众号的 ```access_token```,开发者可以拿取这个```access_token```做进一步的操作。
 
-**Tip**: 当调用处理器(```用户编写的异步函数```)时,实例在接受到匹配消息或事件时会将此次请求的一些上下文信息(如消息内容,发送者的openid...)包裹起来传入处理器第一个参数:```acc```。开发者这是候可以通过获取```acc```上的一些对象或方法进行下一步操作。
+ **Tip**: 当调用处理器(```用户编写的异步函数```)时,实例在接受到匹配消息或事件时会将此次请求的一些上下文信息(如消息内容,发送者的openid...)包裹起来传入处理器第一个参数:```acc```。开发者这是候可以通过获取```acc```上的一些对象或方法进行下一步操作。
 
 **上面这个例子中的 ```context```属性指向实例:```wechatApp```**
 
-### <span id="head12">4. 接收普通消息</span>
+### 4. 接收普通消息
 
 
 
 普通消息的接受的数据字段可以参考 [普通消息数据字段](https://developers.weixin.qq.com/doc/offiaccount/Message_Management/Receiving_standard_messages.html)
-#### <span id="head13"> 文本消息的接收.text </span>
+   ####  文本消息的接收.text 
 
 ```js 
 wechatApp.text(
 'text', 
 async acc=>{ 
-const {toUser,fromUser,createTime,msgType,content,msgId} = acc         				 	 	
-acc
+ const {toUser,fromUser,createTime,msgType,content,msgId} = acc         				 	 	
+ acc
 .send
 .sendTxtMsg([toUser,fromUser,createTime,msgType,content,msgId].join('\n')) 
 })
 	
 ```
 			
-#### <span id="head14"> 图片消息的接收.image</span>
+   ####  图片消息的接收.image
 ```js
 wechatApp.image(async acc=>{ 
 const {toUser,fromUser,createTime,msgType,msgId,picUrl,mediaId} = acc   
@@ -166,7 +139,7 @@ acc
 ```
 
 
-#### <span id="head15"> 语音消息的接收.voice</span>
+   ####  语音消息的接收.voice
 ```js
 wechatApp.voice(async acc=>{ 
 const {toUser,fromUser,createTime,msgType,msgId,format,mediaId} = acc   
@@ -178,7 +151,7 @@ acc
 
 
 
-#### <span id="head16"> 视频消息接收.video </span>
+   ####  视频消息接收.video 
 ```js
 wechatApp.video(async acc=>{ 
 const {toUser,fromUser,createTime,msgType,msgId,thumbMediaId,mediaId} = acc   
@@ -190,9 +163,9 @@ acc
 
 **Tip**:不能在一种消息类型的处理器中获取其他消息类型的数据字段，否则会出现 ```null```或 ```undefined```
 
-### <span id="head17">5. 接收事件推送</span>
+### 5. 接收事件推送
 接收事件推送的数据字段可以参考 [普通事件数据字段](https://developers.weixin.qq.com/doc/offiaccount/Message_Management/Receiving_event_pushes.html)
-#### <span id="head18"> 用户关注公众号.subscribe</span>
+   ####  用户关注公众号.subscribe
 
 ```js
 wechatApp.subscribe(async acc=>{ 
@@ -203,7 +176,7 @@ acc
 })     
 ```
 			
-#### <span id="head19"> 用户取关公众号.unsubscribe</span>
+   ####  用户取关公众号.unsubscribe
 
 ```js
 wechatApp.unsubscribe(async acc=>{ 
@@ -214,7 +187,7 @@ acc
 })   
 ```
 
-#### <span id="head20"> 自定义菜单事件推送.menu </span>
+   ####  自定义菜单事件推送.menu 
 
 ```js
 wechatApp.menu(async acc=>{ 
@@ -226,11 +199,11 @@ acc
 ```
 
 
-### <span id="head21">6. 发送消息 & 客服接口</span>
+### 6. 发送消息 & 客服接口
 
 自动回复消息和客服消息都封装在 ```Send``` 模块中，开发者可以通过处理器函数中的 ```acc```参数获取 ``` const send = acc.send   ```
 
-#### <span id="head22"> 自动回复</span>
+#### 自动回复
 
 - 自动回复文本
 	```send.sendTxtMsg(content)``` 
@@ -261,7 +234,7 @@ acc
 |title|string|是|显示的标题| 
 |desc|string|是|描述信息|  
 
-#### <span id="head23"> 客服消息推送</span>
+#### 客服消息推送
 
 
 - 推送文本消息
@@ -274,7 +247,7 @@ acc
 |toUser|string|否|要推送用户的openid| 
 |content|string|否|推送的文本消息|  
 
-
+       
 
 
 - 推送图片消息
@@ -316,11 +289,11 @@ acc
 |miniConfig|object:{ title: string; appId: string; pagePath: string; thumbMediaId: string }|是|小程序配置信息|通过构造函数传入的 miniConfig|
 |params|object:{[key:string]:any}|是|设置打开小程序的路径后的参数||  
 
-### <span id="head24">7. 用户接口</span>
+### 7. 用户接口
 
 用户接口封装在```Consumer ```模块中，开发者可以通过处理器函数中的 acc参数获取``` const consumer = acc.consumer```
 
-#### <span id="head25"> 获取用户信息</span>
+#### 获取用户信息
 
 ```consumer.getUserDetail(openid)```
 参数说明： 
@@ -351,7 +324,7 @@ acc
 返回值: ```Promise<object>```
 
 
-#### <span id="head26"> 上传永久文件</span>
+#### 上传永久文件
 
 ``` material.addLongTimeMaterial(localPath,type,desc) ``` 
 
@@ -377,11 +350,11 @@ acc
 |参数名|类型|可选|说明|
 |-|-|-|-|
 |mediaId|string|否|媒体id|     
-
+   
 
 返回值: ```Promise<object>```
 
-### <span id="head27">9. 自定义菜单 </span>
+### 9. 自定义菜单 
 ```wechatApp.createMenu(menuData)``` 
 参数说明:
 
@@ -396,27 +369,27 @@ acc
 
 //菜单在一次微信服务器对接验证中生效
 wechatApp.createMenu({
-"button":[
-{	
-"type":"click",
-"name":"今日歌曲",
-"key":"V1001_TODAY_MUSIC"
-},
-{
-"name":"菜单",
-"sub_button":[
-{	
-"type":"view",
-"name":"搜索",
-"url":"http://www.soso.com/"
-},
-{
-"type":"click",
-"name":"赞一下我们",
-"key":"V1001_GOOD"
-}]
-}]
-})
+     "button":[
+     {	
+          "type":"click",
+          "name":"今日歌曲",
+          "key":"V1001_TODAY_MUSIC"
+      },
+      {
+           "name":"菜单",
+           "sub_button":[
+           {	
+               "type":"view",
+               "name":"搜索",
+               "url":"http://www.soso.com/"
+            },
+            {
+               "type":"click",
+               "name":"赞一下我们",
+               "key":"V1001_GOOD"
+            }]
+       }]
+ })
 ```
 
 
@@ -431,12 +404,12 @@ wechatApp.createMenu({
 示例代码:
 ```js
 wechatApp.oauth(async function handler(data,ctx) {  
-const openid = data.openid 
-ctx.response.redirect('http://www.baidu.com?openid='+openid)    
+    const openid = data.openid 
+    ctx.response.redirect('http://www.baidu.com?openid='+openid)    
 	//可以做其他的一系列需要权限的操作
 })
 ```
-## <span id="head28">配置 </span>
+## 配置 
 	
 下面是创建实例可传入的完整配置；
 
@@ -446,78 +419,78 @@ ctx.response.redirect('http://www.baidu.com?openid='+openid)
 
 ```js
 const koaWechatPublicConfig = { 
-appId:"APPID",
-appSecret:"APPSECRET",
-token:"TOKEN",
-encodingAESKey:"ENCODINGAESKEY",
-apiDomain :"https://api.weixin.qq.com/", //默认
-apiUrl: {}, //可以在github仓库中查看已经实现的接口 ,默认不要传入! 
-miniConfig:{ //相关联的小程序配置，如果你的公众号有弹出小程序的场景那么你可以在这里配置
-title:"TITLE",
-appId:"APPID",
-pagePath:"PAGEPATH",
-thumbMediaId:"THUMBMEDIAID" 
-}
+    appId:"APPID",
+    appSecret:"APPSECRET",
+    token:"TOKEN",
+    encodingAESKey:"ENCODINGAESKEY",
+    apiDomain :"https://api.weixin.qq.com/", //默认
+    apiUrl: {}, //可以在github仓库中查看已经实现的接口 ,默认不要传入! 
+    miniConfig:{ //相关联的小程序配置，如果你的公众号有弹出小程序的场景那么你可以在这里配置
+        title:"TITLE",
+        appId:"APPID",
+        pagePath:"PAGEPATH",
+        thumbMediaId:"THUMBMEDIAID" 
+    }
 }
 ```
 
 
 
-## <span id="head29"> 类型</span>
+## 类型
 	
 - 普通消息接受数据字段类型定义
 ```typescript
 export type ApplicationCommonContext = {
-context:WechatApplication,
-send:Send,
-material:Material,
-consumer:Consumer,
-toUser:string,
-fromUser:string,
-msgType:MsgType,
-createTime:number,
-msgId:string,
-content?:string,
-picUrl?:string,
-mediaId?:string, 
-format?:any, 
-thumbMediaId?:string
-locX?:number,
-locY?:number,
-scale?:number,
-label?:string,
-title?:string,
-desc?:string,
-url?:string    
+    context:WechatApplication,
+    send:Send,
+    material:Material,
+    consumer:Consumer,
+    toUser:string,
+    fromUser:string,
+    msgType:MsgType,
+    createTime:number,
+    msgId:string,
+    content?:string,
+    picUrl?:string,
+    mediaId?:string, 
+    format?:any, 
+    thumbMediaId?:string
+    locX?:number,
+    locY?:number,
+    scale?:number,
+    label?:string,
+    title?:string,
+    desc?:string,
+    url?:string    
 }
 ```
 - 普通事件接受数据字段类型定义
 ```typescript 
 export type ApplicationEventContext = {
-context:WechatApplication, 
-send:Send,
-material:Material,
-consumer:Consumer,
-toUser:string,
-fromUser:string,
-createTime:number,
-msgType:MsgType,
-scene: SceneType,
-event:string,
-eventKey?:string,
-ticket?:string,
-menuId?:string
+    context:WechatApplication, 
+    send:Send,
+    material:Material,
+    consumer:Consumer,
+    toUser:string,
+    fromUser:string,
+    createTime:number,
+    msgType:MsgType,
+    scene: SceneType,
+    event:string,
+    eventKey?:string,
+    ticket?:string,
+    menuId?:string
 }
 ```
 
 - 消息类型定义
 ```typescript
 export const enum MsgType{ 
-TEXT, // 0
-IMAGE, // 1
-VOICE, // 2
-VIDEO, // 3
-EVENT,  // 4 
+    TEXT, // 0
+    IMAGE, // 1
+    VOICE, // 2
+    VIDEO, // 3
+    EVENT,  // 4 
 }
 
 
@@ -527,14 +500,14 @@ EVENT,  // 4
 
 ```typescript
 export const enum EventType {
-SUBSCRIBE, //0 
-UNSUBSCRIBE, // 1
-SCAN , // 2 
-MENU // 3 
+    SUBSCRIBE, //0 
+    UNSUBSCRIBE, // 1
+    SCAN , // 2 
+    MENU // 3 
 }
 ```
 
-## <span id="head30"> 支持</span>
+## 支持
 
 - 欢迎 [issues](https://github.com/Changlon/koa-wechat-public/issues/new) 
 - 作者联系邮箱: changlong.a2@gmail.com

@@ -93,7 +93,7 @@ export type ApplicationEventContext = {
     menuId?:string
 }
 
-export declare class WechatApplication {  
+export class WechatApplication {  
 
     config:WechatApplicationConfig  
     token : string

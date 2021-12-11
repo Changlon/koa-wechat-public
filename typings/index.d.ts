@@ -2,11 +2,10 @@
 
 
 import * as  Application from 'koa'  
-import {Send}  from 'send'
-import { CryptoGraphyInterface } from 'cryptog' 
-import Promise from 'promise'
-import { Material } from 'material'
-import { Consumer } from 'consumer'
+import {Send}  from './send'
+import { CryptoGraphyInterface } from './cryptog' 
+import { Material } from './material'
+import { Consumer } from './consumer'
 
 
 

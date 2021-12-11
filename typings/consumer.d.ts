@@ -1,4 +1,4 @@
-import { WechatApplication, WechatApplicationConfig } from ".";
+import WechatApplication,{  WechatApplicationConfig } from ".";
 
 export declare class  Consumer {
 

@@ -1,6 +1,6 @@
 
 import { Consumer as ConsumerInterface } from 'consumer'
-import { WechatApplication } from '../../typings'
+import  WechatApplication  from '../../typings'
 import util from 'util'
 import axios from 'axios'
 

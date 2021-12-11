@@ -3,6 +3,8 @@ const Router = require('koa-router')
 const xmlParser = require ('koa-xml-body') 
 const wechat = require('../src/lib/wechat').default 
 
+const app = new koa() 
+
 const wapp = new wechat({
     appId:"APPID",
     appSecret:"APPSECRET",
@@ -16,7 +18,7 @@ wapp.oauth(async function handler(data,ctx) {
 })
 
 
-const app = new koa()  
+
 const router = new Router() 
 router.all('/wechat',wapp.start()) 
 router.get('/MP_verify_Mi8hQs3epYmV9Q5G.txt',async ctx =>{ 

@@ -1,6 +1,6 @@
 
 import { Material as MaterialInterface } from 'material'
-import { WechatApplication } from '../../typings'
+import  WechatApplication  from '../../typings'
 import fs from 'fs'
 import util from 'util'
 import axios from 'axios'

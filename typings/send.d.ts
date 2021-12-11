@@ -1,5 +1,5 @@
 
-import { Ctx, WechatApplication } from "."
+import WechatApplication,{ Ctx } from "."
 
 /**
  * 消息管理接口

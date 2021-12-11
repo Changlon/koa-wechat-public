@@ -1,5 +1,5 @@
 
-import { ApplicationCommonContext, ApplicationEventContext, EventType, MsgType, PatternType, SceneType, Stack, WechatApplication } from '../../typings'
+import WechatApplication, { ApplicationCommonContext, ApplicationEventContext, EventType, MsgType, PatternType, SceneType, Stack } from '../../typings'
 
 import Send from './send'
 import { Material } from './material'

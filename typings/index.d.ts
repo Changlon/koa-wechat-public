@@ -8,94 +8,9 @@ import { Material } from './material'
 import { Consumer } from './consumer'
 
 
+ declare class WechatApplication {  
 
-
-export const enum EventType {
-    SUBSCRIBE,
-    UNSUBSCRIBE,
-    SCAN ,
-    MENU
-}
-
-
-export const enum MsgType{ 
-    TEXT,
-    IMAGE, 
-    VOICE,
-    VIDEO,
-    EVENT,  
-}
-
-
-export const enum SceneType {
-    NORMAL = "normal" ,
-    SCAN = "scan" 
-}
-
-
-export const enum PatternType { 
-    STRING = "string" ,
-    REGEXP = "regexp" 
-}
-
-
-export interface WechatApplicationConfig {
-    [k:string]:any
-}
-export type Ctx = Application.BaseContext & Application.DefaultContext
-export type Next = Application.Next 
-
-export type Stack = { 
-    type : MsgType , 
-    handlers :  ((ctx:ApplicationCommonContext|ApplicationEventContext)=>any)[], 
-    pattern ?:string | RegExp ,
-    patternType?: PatternType ,
-    eventType ? :EventType 
-}
-
-export type ApplicationCommonContext = {
-    context:WechatApplication,
-    send:Send,
-    material:Material,
-    consumer:Consumer,
-    toUser:string,
-    fromUser:string,
-    msgType:MsgType,
-    createTime:number,
-    msgId:string,
-    content?:string,
-    picUrl?:string,
-    mediaId?:string, 
-    format?:any, 
-    thumbMediaId?:string
-    locX?:number,
-    locY?:number,
-    scale?:number,
-    label?:string,
-    title?:string,
-    desc?:string,
-    url?:string    
-}
-
-export type ApplicationEventContext = {
-    context:WechatApplication, 
-    send:Send,
-    material:Material,
-    consumer:Consumer,
-    toUser:string,
-    fromUser:string,
-    createTime:number,
-    msgType:MsgType,
-    scene: SceneType,
-    event:string,
-    eventKey?:string,
-    ticket?:string,
-    menuId?:string
-}
-
-export class WechatApplication {  
-
-    config:WechatApplicationConfig  
+    config:WechatApplication.WechatApplicationConfig  
     token : string
     appId: string
     appSecret:string
@@ -110,38 +25,38 @@ export class WechatApplication {
     } 
 
 
-    ctx : Ctx
-    next: Next
+    ctx :WechatApplication.Ctx
+    next: WechatApplication.Next
     
 
-    stack: Stack[]  
+    stack: WechatApplication.Stack[]  
     crypto: CryptoGraphyInterface 
 
-    constructor(config?:WechatApplicationConfig) 
+    constructor(config:WechatApplication.WechatApplicationConfig) 
 
     /**
      * 初始化配置
      * @param config 微信公众号配置参数 
      */
-    init(config:WechatApplicationConfig):void 
+    init(config:WechatApplication.WechatApplicationConfig):void 
 
 
     /**
      * 开启公众号 不需要通过 auth,handle方法判断请求GET，POST 
      */
-    start():(ctx:Ctx,next?:Next)=>any
+    start():(ctx:WechatApplication.Ctx,next?:WechatApplication.Next)=>any
     
 
     /**
      * 公众号验证
      */
-    auth():(ctx:Ctx,next?:Next)=>any
+    auth():(ctx:WechatApplication.Ctx,next?:WechatApplication.Next)=>any
 
 
     /**
      * 生成处理数据中间件
      */
-    handle():(ctx:Ctx,next?:Next)=>any 
+    handle():(ctx:WechatApplication.Ctx,next?:WechatApplication.Next)=>any 
 
 
 
@@ -166,28 +81,28 @@ export class WechatApplication {
      * @param name 
      * @param handler 
      */
-    text(content:string | RegExp,handler:(acc:ApplicationCommonContext)=>any):WechatApplication  
+    text(content:string | RegExp,handler:(acc:WechatApplication.ApplicationCommonContext)=>any):WechatApplication  
 
 
     /**
      * 图片处理
      * @param hander 
      */
-    image(hander:(acc:ApplicationCommonContext)=>any):WechatApplication 
+    image(hander:(acc:WechatApplication.ApplicationCommonContext)=>any):WechatApplication 
 
 
     /**
      * 视频处理
      * @param hander 
      */
-    video(handler:(acc:ApplicationCommonContext)=>any):WechatApplication  
+    video(handler:(acc:WechatApplication.ApplicationCommonContext)=>any):WechatApplication  
 
 
     /**
      * 语音处理
      * @param handler 
      */
-    voice(handler:(acc:ApplicationCommonContext)=>any):WechatApplication  
+    voice(handler:(acc:WechatApplication.ApplicationCommonContext)=>any):WechatApplication  
 
 
     
@@ -195,14 +110,14 @@ export class WechatApplication {
      * 用户关注公众号事件
      * @param acc 
      */
-    subscribe(handler: (acc:ApplicationEventContext) => any):WechatApplication  
+    subscribe(handler: (acc:WechatApplication.ApplicationEventContext) => any):WechatApplication  
 
 
     /**
      * 用户取消关注公众号事件
      * @param acc 
      */
-    unsubscribe(handler :(acc:ApplicationEventContext ) => any):WechatApplication  
+    unsubscribe(handler :(acc:WechatApplication.ApplicationEventContext ) => any):WechatApplication  
 
 
 
@@ -210,14 +125,14 @@ export class WechatApplication {
      * 用户扫码进入场景事件
      * @param handler 
      */
-    scan(handler :(acc:ApplicationEventContext ) => any):WechatApplication
+    scan(handler :(acc:WechatApplication.ApplicationEventContext ) => any):WechatApplication
 
 
     /**
      * 公众号菜单事件处理
      * @param handler 
      */
-    menu(handler:(acc:ApplicationEventContext)=> any): WechatApplication 
+    menu(handler:(acc:WechatApplication.ApplicationEventContext)=> any): WechatApplication 
 
 
 
@@ -232,7 +147,112 @@ export class WechatApplication {
             openid:string,
             scope:string,
             state:string
-    },ctx:Ctx)=>any) :WechatApplication  
+    },ctx:WechatApplication.Ctx)=>any) :WechatApplication  
     
 }
 
+
+declare namespace WechatApplication {
+
+    
+     type Ctx = Application.BaseContext & Application.DefaultContext
+     type Next = Application.Next  
+
+   
+     const enum EventType {
+        SUBSCRIBE,
+        UNSUBSCRIBE,
+        SCAN ,
+        MENU
+    }
+
+
+     const enum MsgType{ 
+        TEXT,
+        IMAGE, 
+        VOICE,
+        VIDEO,
+        EVENT,  
+    }
+
+
+     const enum SceneType {
+        NORMAL = "normal" ,
+        SCAN = "scan" 
+    }
+
+
+     const enum PatternType { 
+        STRING = "string" ,
+        REGEXP = "regexp" 
+    }
+
+
+    type WechatApplicationConfig  = {
+        appId:string, 
+        appSecret:string,
+        token:string,
+        encodingAESKey?:string,
+        miniConfig?:{
+            title:string,
+            appId:string,
+            pagePath:string,
+            thumbMediaId:string 
+        },
+        apiDomain?:string,
+        apiUrl?:{[k:string]:any},
+        [k:string]:any
+     }
+    
+
+     type Stack = { 
+        type : MsgType , 
+        handlers :  ((ctx:ApplicationCommonContext|ApplicationEventContext)=>any)[], 
+        pattern ?:string | RegExp ,
+        patternType?: PatternType ,
+        eventType ? :EventType 
+    }
+
+     type ApplicationCommonContext = {
+        context:WechatApplication,
+        send:Send,
+        material:Material,
+        consumer:Consumer,
+        toUser:string,
+        fromUser:string,
+        msgType:MsgType,
+        createTime:number,
+        msgId:string,
+        content?:string,
+        picUrl?:string,
+        mediaId?:string, 
+        format?:any, 
+        thumbMediaId?:string
+        locX?:number,
+        locY?:number,
+        scale?:number,
+        label?:string,
+        title?:string,
+        desc?:string,
+        url?:string    
+    }
+
+     type ApplicationEventContext = {
+        context:WechatApplication, 
+        send:Send,
+        material:Material,
+        consumer:Consumer,
+        toUser:string,
+        fromUser:string,
+        createTime:number,
+        msgType:MsgType,
+        scene: SceneType,
+        event:string,
+        eventKey?:string,
+        ticket?:string,
+        menuId?:string
+    }
+
+}
+
+export =  WechatApplication

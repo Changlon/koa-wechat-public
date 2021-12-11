@@ -1,4 +1,4 @@
-import { Ctx, WechatApplication } from '../../typings'
+import WechatApplication, { Ctx }  from '../../typings'
 import * as SEND from 'send'
 import axios from 'axios'
 import util from 'util'

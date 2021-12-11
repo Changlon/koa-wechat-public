@@ -4,7 +4,7 @@
  * 素材管理接口
  */
 
-import { WechatApplication } from ".";
+import WechatApplication  from ".";
 
 export  declare class Material { 
 

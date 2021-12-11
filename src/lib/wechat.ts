@@ -10,12 +10,13 @@ import accessTokenCache from '../access_token_cache.json'
 
 import apiUrl from './wetchat-common-api'
 
-import WechatApplication, { MsgType, Next, WechatApplicationConfig, Ctx, Stack, ApplicationCommonContext, ApplicationEventContext, PatternType, EventType } from '../../typings'
+import WechatApplication, {  Next, WechatApplicationConfig, Ctx, Stack, ApplicationCommonContext, ApplicationEventContext } from '../../typings'
 import { CryptoGraphyInterface } from 'cryptog'
 import CryptoGraphy from '../utils/cryptoGraphyUtil'
+import { EventType, MsgType, PatternType } from 'enum'
 const spearator = process.platform === 'win32' ? '\\' : '/'
 
-export default class WetchatPublic extends WechatApplication {
+export default class WetchatPublic implements WechatApplication {
     config: WechatApplicationConfig
     token: string
     appId: string
@@ -32,7 +33,6 @@ export default class WetchatPublic extends WechatApplication {
     oauthHandler:(oauthData:any,ctx:Ctx)=> Promise<any>
 
     constructor (config:WechatApplicationConfig) {
-      super(config)
       if (config) {
         this.init(config)
       }

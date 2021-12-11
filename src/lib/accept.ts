@@ -1,10 +1,12 @@
 
-import WechatApplication, { ApplicationCommonContext, ApplicationEventContext, EventType, MsgType, PatternType, SceneType, Stack } from '../../typings'
+import WechatApplication, { ApplicationCommonContext, ApplicationEventContext, Stack } from '../../typings'
+
 
 import Send from './send'
 import { Material } from './material'
 import WetchatPublic from './wechat'
 import { Consumer } from './consumer'
+import { EventType, MsgType, PatternType, SceneType } from 'enum'
 
 /** 异步处理 stack 的执行器 */
 function excuteHandler(context:WechatApplication, acceptContext:ApplicationCommonContext|ApplicationEventContext, handlers:((ctx:ApplicationCommonContext|ApplicationEventContext)=>any)[], cur:number):Promise<any>

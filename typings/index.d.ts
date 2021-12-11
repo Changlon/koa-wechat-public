@@ -1,15 +1,16 @@
 
-
-
 import * as  Application from 'koa'  
 import {Send}  from './send'
 import { CryptoGraphyInterface } from './cryptog' 
 import { Material } from './material'
 import { Consumer } from './consumer'
+import { EventType, MsgType, PatternType, SceneType } from './enum'
+
+
+
 
 
  declare class WechatApplication {  
-
     config:WechatApplication.WechatApplicationConfig  
     token : string
     appId: string
@@ -159,33 +160,7 @@ declare namespace WechatApplication {
      type Next = Application.Next  
 
    
-     const enum EventType {
-        SUBSCRIBE,
-        UNSUBSCRIBE,
-        SCAN ,
-        MENU
-    }
-
-
-     const enum MsgType{ 
-        TEXT,
-        IMAGE, 
-        VOICE,
-        VIDEO,
-        EVENT,  
-    }
-
-
-     const enum SceneType {
-        NORMAL = "normal" ,
-        SCAN = "scan" 
-    }
-
-
-     const enum PatternType { 
-        STRING = "string" ,
-        REGEXP = "regexp" 
-    }
+     
 
 
     type WechatApplicationConfig  = {

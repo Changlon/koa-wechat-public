@@ -76,6 +76,10 @@ app.listen(3001)
 		- [7. 用户接口](#head24)
 			- [ 获取用户信息](#head25)
 			- [ 上传永久文件](#head26)
+		- [8. 素材管理](#sucai)
+			- [ 上传临时文件](#sucai-1)
+			- [ 上传永久文件](#head26)	
+			- [ 删除永久文件](#sucai-2)
 		- [9. 自定义菜单 ](#head27)
 	- [配置 ](#head28)
 	- [ 类型](#head29)
@@ -330,13 +334,13 @@ acc
 |openid|string|否|可以通过```acc.fromUser```获取用户的openid|    
 
 
-### 8. 素材管理
+### <span id = "sucai">	 8. 素材管理
 
 素材管理接口封装在```Material ```模块中，开发者可以通过处理器函数中的 acc参数获取 ```const material = acc.material```
 
 媒体素材接口参考 : [素材接口](https://developers.weixin.qq.com/doc/offiaccount/Asset_Management/New_temporary_materials.html)
 
-#### 上传临时文件
+####  <span id = "sucai-1"> 上传临时文件
 
 ``` material.addTmpMaterial(localPath, type) ``` 
 
@@ -367,7 +371,7 @@ acc
 
 
 
-#### 删除永久文件
+####  <span id = "sucai-2"> 删除永久文件
 
 
 ``` material.removeLongTimeMaterial(mediaId) ``` 
@@ -540,12 +544,6 @@ MENU // 3
 - 作者联系邮箱: changlong.a2@gmail.com
 - 可以给一波 Star !!! 有问题我们一起讨论，一起来完善这个框架
 - 未来: 如果koa版本的库足够成熟，考虑再去适配其他web框架下的库，比如express!
-- 作者最近生活有些拮据，你的支持将会是作者继续创作下去的动力！！！
 
-
-<img src = "https://img-blog.csdnimg.cn/37acc7c4d91d45e4878c0de7e53298cc.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQ2hhbmdsb24=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" height = "300" width = "300" />
-
-
-<img src = "https://img-blog.csdnimg.cn/71a80532a6834a6dbb38553a8cdc9107.jpg?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQ2hhbmdsb24=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_center" height = "300" width = "300" />
 
 

@@ -17,8 +17,8 @@ const wapp = new wechat({
 // })
 
 wapp.text('客服', async  acc =>{ 
-    console.log(acc.msgId)
-    console.log(acc)
+    
+    console.log(acc.context.msgIdQueque)
     await new Promise(r=>{
         setTimeout(()=>{
             r(1)

@@ -14,6 +14,7 @@ import WechatApplication, {  Next, WechatApplicationConfig, Ctx, Stack, Applicat
 import { CryptoGraphyInterface } from 'cryptog'
 import CryptoGraphy from '../utils/cryptoGraphyUtil'
 import { EventType, MsgType, PatternType } from 'enum'
+import { from } from 'form-data'
 const spearator = process.platform === 'win32' ? '\\' : '/'
 
 export default class WetchatPublic implements WechatApplication {
@@ -28,7 +29,7 @@ export default class WetchatPublic implements WechatApplication {
     ctx: Ctx
     next: Next
     stack: Stack[]
-    msgIdQueque:Map<number,Date>
+    msgIdQueque:Map<string,number>
     crypto:CryptoGraphyInterface
     menuHandler:()=>Promise<any>
     oauthHandler:(oauthData:any,ctx:Ctx)=> Promise<any>
@@ -138,30 +139,30 @@ export default class WetchatPublic implements WechatApplication {
             `)
         }
 
-
-        const msgId = xml.MsgId[0]   
-
-        if(!this.msgIdQueque.has(msgId)) { //新的消息 
-          this.msgIdQueque.set(msgId,new Date())
+        const fromUserName = xml.FromUserName && xml.FromUserName[0],
+              createtime = xml.CreateTime && xml.CreateTime[0]  
+         
+        //消息排重
+        if(!this.msgIdQueque.has(`${fromUserName}-${createtime}`)) { 
+          this.msgIdQueque.set(`${fromUserName}-${createtime}`,new Date().getTime())
           this.ctx = ctx
           this.next = next
           const msgType = <string> (xml.MsgType[0]) + 'Handler'
           await Promise.resolve(Handlers[msgType].call(this, xml))
         }
-
-        //清理key
-       const keyIter =  this.msgIdQueque.keys() 
-       let k_ =  keyIter.next()
-     
-       while( !k_.done ) {  
-          if( (new Date().getTime() - this.msgIdQueque.get(k_.value).getTime())
-            > ( 1000 * 15 ) 
-          ){
-            this.msgIdQueque.delete(k_.value) 
-          }
-          k_ = keyIter.next()
-       }
         
+        //清理key
+        const keyIter =  this.msgIdQueque.keys() 
+        let k_ =  keyIter.next()
+        while( !k_.done ) {  
+            if( (new Date().getTime() - this.msgIdQueque.get(k_.value))
+              > ( 1000 * 15 ) 
+            ){
+              this.msgIdQueque.delete(k_.value) 
+            }
+            k_ = keyIter.next()
+        }
+
       }
     }
 

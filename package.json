@@ -17,7 +17,7 @@
     "微信公众号"
   ],
   "scripts": {
-    "start": "ts-node ./examples/index.ts",
+    "start": "ts-node ./example/oauth.ts",
     "dev": "nodemon -e ts --exec ts-node ./example/oauth.ts",
     "build": "rd /s/q dist && tsc"
   },

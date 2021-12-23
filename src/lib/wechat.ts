@@ -28,6 +28,7 @@ export default class WetchatPublic implements WechatApplication {
     ctx: Ctx
     next: Next
     stack: Stack[]
+    msgIdQueque:Map<number,Date>
     crypto:CryptoGraphyInterface
     menuHandler:()=>Promise<any>
     oauthHandler:(oauthData:any,ctx:Ctx)=> Promise<any>
@@ -51,6 +52,7 @@ export default class WetchatPublic implements WechatApplication {
         encodingAESKey: config.encodingAESKey
       })
       this.stack = []
+      this.msgIdQueque = new Map()
       this.encodingAESKey = config.encodingAESKey
       this.miniConfig = config.miniConfig
     }
@@ -136,10 +138,30 @@ export default class WetchatPublic implements WechatApplication {
             `)
         }
 
-        this.ctx = ctx
-        this.next = next
-        const msgType = <string> (xml.MsgType[0]) + 'Handler'
-        await Promise.resolve(Handlers[msgType].call(this, xml))
+
+        const msgId = xml.MsgId[0]   
+
+        if(!this.msgIdQueque.has(msgId)) { //新的消息 
+          this.msgIdQueque.set(msgId,new Date())
+          this.ctx = ctx
+          this.next = next
+          const msgType = <string> (xml.MsgType[0]) + 'Handler'
+          await Promise.resolve(Handlers[msgType].call(this, xml))
+        }
+
+        //清理key
+       const keyIter =  this.msgIdQueque.keys() 
+       let k_ =  keyIter.next()
+     
+       while( !k_.done ) {  
+          if( (new Date().getTime() - this.msgIdQueque.get(k_.value).getTime())
+            > ( 1000 * 15 ) 
+          ){
+            this.msgIdQueque.delete(k_.value) 
+          }
+          k_ = keyIter.next()
+       }
+        
       }
     }
 

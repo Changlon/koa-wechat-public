@@ -6,21 +6,28 @@ const wechat = require('../src/lib/wechat').default
 const app = new koa() 
 
 const wapp = new wechat({
-    appId:"APPID",
-    appSecret:"APPSECRET",
-    token:"TOEKN",
-    encodingAESKey:"ENCODINGAESKEY"
+    appId:"appid",
+    appSecret:"secret",
+    token:"token"
 })
 
-wapp.oauth(async function handler(data,ctx) {  
-    const openid = data.openid 
-    ctx.response.redirect('http://www.baidu.com?openid='+openid)    
+// wapp.oauth(async function handler(data,ctx) {  
+//     const openid = data.openid 
+//     ctx.response.redirect('http://www.baidu.com?openid='+openid)    
+// })
+
+wapp.text('客服', async  acc =>{ 
+    console.log(acc.msgId)
+    console.log(acc)
+    await new Promise(r=>{
+        setTimeout(()=>{
+            r(1)
+        },1000 * 5)
+    })
 })
-
-
 
 const router = new Router() 
-router.all('/wechat',wapp.start()) 
+router.all('/wechat_dev',wapp.start()) 
 router.get('/MP_verify_Mi8hQs3epYmV9Q5G.txt',async ctx =>{ 
     ctx.body = `授权凭证`
 })

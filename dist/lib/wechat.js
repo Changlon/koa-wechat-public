@@ -40,6 +40,7 @@ class WetchatPublic {
             encodingAESKey: config.encodingAESKey
         });
         this.stack = [];
+        this.msgIdQueque = new Map();
         this.encodingAESKey = config.encodingAESKey;
         this.miniConfig = config.miniConfig;
     }
@@ -121,10 +122,24 @@ class WetchatPublic {
                app.use(wetchatApp.start()) 
             `);
             }
-            this.ctx = ctx;
-            this.next = next;
-            const msgType = (xml.MsgType[0]) + 'Handler';
-            yield Promise.resolve(accept_1.default[msgType].call(this, xml));
+            const msgId = xml.MsgId[0];
+            if (!this.msgIdQueque.has(msgId)) { //新的消息 
+                this.msgIdQueque.set(msgId, new Date());
+                this.ctx = ctx;
+                this.next = next;
+                const msgType = (xml.MsgType[0]) + 'Handler';
+                yield Promise.resolve(accept_1.default[msgType].call(this, xml));
+            }
+            //清理key
+            const keyIter = this.msgIdQueque.keys();
+            let k_ = keyIter.next();
+            while (!k_.done) {
+                if ((new Date().getTime() - this.msgIdQueque.get(k_.value).getTime())
+                    > (1000 * 15)) {
+                    this.msgIdQueque.delete(k_.value);
+                }
+                k_ = keyIter.next();
+            }
         });
     }
     getAccessToken() {

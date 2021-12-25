@@ -7,6 +7,7 @@
 2. 依赖koa-xml-body 中间件 
 3. 可结合koa-router,也可以直接单当做koa的中间件来使用 
 4. github: [仓库地址](https://github.com/Changlon/koa-wechat-public)
+5. 增加了微信服务器消息5秒未回应消息重发的处理机制
 
 
 

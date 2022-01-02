@@ -95,10 +95,10 @@ export default class Send implements SEND.Send {
         async pushMiniProgramCardMsg (toUser: string,  miniConfig?: { title: string; appId: string; pagePath: string; thumbMediaId: string },params?: { [k: string]: any }): Promise<any> { 
           
           const config = miniConfig || this.app.miniConfig 
-          let paramStr =  config.pagePath[config.pagePath.length-1] === '?' ? "" : "?"
+          let paramStr =  config.pagePath[config.pagePath.length-1] === "?" ? "" : "?"
           if(params) {
             Object.keys(params).forEach(key=>{
-              paramStr = paramStr + `${key} = ${params[key]}&`
+              paramStr = paramStr + `${key}=${params[key]}&`
             })
             paramStr = paramStr.substring(0,paramStr.length-1)
           }

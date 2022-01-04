@@ -1,4 +1,4 @@
-<p align="center"><img src="/docs/logo.png" alt="Koa middleware framework for wehchat" /> </p>
+<p align="center"><img src="/docs/logo_.png" alt="Koa middleware framework for wehchat" /> </p>
 
 
 

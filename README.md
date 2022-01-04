@@ -1,5 +1,5 @@
 
-<img src="/docs/logo.png" alt="Koa middleware framework for wehchat" width="1000" heigth="250" /> 
+<img src="/docs/logo.png" alt="Koa middleware framework for wehchat" width="900" heigth="250" /> 
 
 
 # <span id="head1"> 一款基于Koa的微信公众号开发框架</span>

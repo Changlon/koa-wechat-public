@@ -98,10 +98,10 @@ class Send {
     pushMiniProgramCardMsg(toUser, miniConfig, params) {
         return __awaiter(this, void 0, void 0, function* () {
             const config = miniConfig || this.app.miniConfig;
-            let paramStr = config.pagePath[config.pagePath.length - 1] === '?' ? "" : "?";
+            let paramStr = config.pagePath[config.pagePath.length - 1] === "?" ? "" : "?";
             if (params) {
                 Object.keys(params).forEach(key => {
-                    paramStr = paramStr + `${key} = ${params[key]}&`;
+                    paramStr = paramStr + `${key}=${params[key]}&`;
                 });
                 paramStr = paramStr.substring(0, paramStr.length - 1);
             }

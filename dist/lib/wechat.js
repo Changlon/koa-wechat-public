@@ -15,12 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 const util_1 = __importDefault(require("util"));
 const crypto_1 = __importDefault(require("crypto"));
-const fs_1 = __importDefault(require("fs"));
 const accept_1 = __importDefault(require("./accept"));
-const access_token_cache_json_1 = __importDefault(require("../access_token_cache.json"));
 const wetchat_common_api_1 = __importDefault(require("./wetchat-common-api"));
 const cryptoGraphyUtil_1 = __importDefault(require("../utils/cryptoGraphyUtil"));
-const spearator = process.platform === 'win32' ? '\\' : '/';
 class WetchatPublic {
     constructor(config) {
         if (config) {
@@ -41,6 +38,10 @@ class WetchatPublic {
         });
         this.stack = [];
         this.msgIdQueque = new Map();
+        this.accessTokenCache = {
+            access_token: '',
+            expires_time: 0
+        };
         this.encodingAESKey = config.encodingAESKey;
         this.miniConfig = config.miniConfig;
     }
@@ -147,15 +148,16 @@ class WetchatPublic {
         return __awaiter(this, void 0, void 0, function* () {
             const currentTime = new Date().getTime();
             const url = util_1.default.format(this.apiUrl.accessTokenApi, this.apiDomain, this.appId, this.appSecret);
-            if (access_token_cache_json_1.default.access_token && access_token_cache_json_1.default.expires_time && access_token_cache_json_1.default.expires_time > currentTime) {
-                return access_token_cache_json_1.default.access_token;
+            if (this.accessTokenCache.access_token &&
+                this.accessTokenCache.expires_time &&
+                this.accessTokenCache.expires_time > currentTime) {
+                return this.accessTokenCache.access_token;
             }
             const resStatus = yield axios_1.default.get(url);
             if (resStatus.status === 200) {
                 const data = resStatus.data;
-                access_token_cache_json_1.default.access_token = data.access_token;
-                access_token_cache_json_1.default.expires_time = new Date().getTime() + (parseInt(data.expires_in) - 200) * 1000;
-                fs_1.default.writeFile(`${__dirname}${spearator}access_token_cache.json`, JSON.stringify(access_token_cache_json_1.default), () => { });
+                this.accessTokenCache.access_token = data.access_token;
+                this.accessTokenCache.expires_time = new Date().getTime() + (parseInt(data.expires_in) - 200) * 1000;
                 return data.access_token;
             }
             return '';

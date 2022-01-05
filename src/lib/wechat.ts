@@ -2,20 +2,13 @@
 import axios from 'axios'
 import util from 'util'
 import crypto from 'crypto'
-
-import fs from 'fs'
 import Handlers from './accept'
-
-import accessTokenCache from '../access_token_cache.json'
-
 import apiUrl from './wetchat-common-api'
-
 import WechatApplication, {  Next, WechatApplicationConfig, Ctx, Stack, ApplicationCommonContext, ApplicationEventContext } from '../../typings'
 import { CryptoGraphyInterface } from 'cryptog'
 import CryptoGraphy from '../utils/cryptoGraphyUtil'
 import { EventType, MsgType, PatternType } from 'enum'
-import { from } from 'form-data'
-const spearator = process.platform === 'win32' ? '\\' : '/'
+
 
 export default class WetchatPublic implements WechatApplication {
     config: WechatApplicationConfig
@@ -30,6 +23,10 @@ export default class WetchatPublic implements WechatApplication {
     next: Next
     stack: Stack[]
     msgIdQueque:Map<string,number>
+    accessTokenCache:{
+      access_token:string,
+      expires_time:number
+    }
     crypto:CryptoGraphyInterface
     menuHandler:()=>Promise<any>
     oauthHandler:(oauthData:any,ctx:Ctx)=> Promise<any>
@@ -54,6 +51,11 @@ export default class WetchatPublic implements WechatApplication {
       })
       this.stack = []
       this.msgIdQueque = new Map()
+      this.accessTokenCache = { 
+        access_token:'',
+        expires_time:0
+      }
+
       this.encodingAESKey = config.encodingAESKey
       this.miniConfig = config.miniConfig
     }
@@ -168,18 +170,25 @@ export default class WetchatPublic implements WechatApplication {
 
     async getAccessToken () {
       const currentTime = new Date().getTime()
-      const url = util.format(this.apiUrl.accessTokenApi, this.apiDomain, this.appId, this.appSecret)
-      if (accessTokenCache.access_token && accessTokenCache.expires_time && accessTokenCache.expires_time > currentTime) {
-        return accessTokenCache.access_token
-      }
+      const url = util.format(this.apiUrl.accessTokenApi, this.apiDomain, this.appId, this.appSecret) 
+
+      if( 
+          this.accessTokenCache.access_token &&  
+          this.accessTokenCache.expires_time && 
+          this.accessTokenCache.expires_time > currentTime 
+          
+        ) {
+          return this.accessTokenCache.access_token
+        }
+
       const resStatus = await axios.get(url)
       if (resStatus.status === 200) {
         const data = resStatus.data
-        accessTokenCache.access_token = data.access_token
-        accessTokenCache.expires_time = new Date().getTime() + (parseInt(data.expires_in) - 200) * 1000
-        fs.writeFile(`${__dirname}${spearator}access_token_cache.json`, JSON.stringify(accessTokenCache), () => {})
+        this.accessTokenCache.access_token = data.access_token
+        this.accessTokenCache.expires_time = new Date().getTime() + (parseInt(data.expires_in) - 200) * 1000
         return data.access_token
       }
+
       return ''
     }
 

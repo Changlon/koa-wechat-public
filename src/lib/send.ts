@@ -110,4 +110,14 @@ export default class Send implements SEND.Send {
           const res = await axios.post(url, $data)
           return this.push(res)
         }
+
+        async pushTemplateMsg(toUser: string, templateId: string, data?: { [k: string]: any }, url?: string, topcolor?: string) { 
+          const $data = `{"touser":"${toUser}","template_id":"${templateId}","url":"${url || ""}","topcolor":"${topcolor || "#ff0000"}","data":${JSON.stringify(data)}}` 
+          const token = await this.app.getAccessToken() 
+          if(!token) throw new Error(`Send -- pushTemplateMsg access_token获取失败${token}`)
+          const url_ = util.format(this.app.apiUrl.template,this.app.apiDomain,token)  
+          const res = await axios.post(url_,$data) 
+          return this.push(res)
+        } 
+        
 }

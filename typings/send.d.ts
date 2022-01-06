@@ -43,5 +43,8 @@ export  declare class Send {
         thumbMediaId:string
     }):Promise<any>
     
+    /** 推送模板消息 */
+    pushTemplateMsg(toUser:string,templateId:string,data?:{[k:string]:any},url?:string,topcolor?:string)   
 
+    
 } 

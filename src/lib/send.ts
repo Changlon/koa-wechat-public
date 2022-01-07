@@ -111,13 +111,21 @@ export default class Send implements SEND.Send {
           return this.push(res)
         }
 
-        async pushTemplateMsg(toUser: string, templateId: string, data?: { [k: string]: any }, url?: string, topcolor?: string) { 
-          const $data = `{"touser":"${toUser}","template_id":"${templateId}","url":"${url || ""}","topcolor":"${topcolor || "#ff0000"}","data":${JSON.stringify(data)}}` 
+        async pushTemplateMsg(toUser: string, templateId: string, data?: { [k: string]: any }, url?: string, miniprogram?:{
+          appid:string,
+          pagepath:string
+        }, topcolor?: string) {  
+          const miniConfig = this.app.miniConfig 
+          const defaultMiniProgram = miniConfig ? {appid:miniConfig.appId,pagepath:miniConfig.pagePath} : undefined 
+          const $data = `{"touser":"${toUser}","template_id":"${templateId}","url":"${url || ""}","miniprogram":${
+            miniprogram ? JSON.stringify(miniprogram) : defaultMiniProgram ? JSON.stringify(defaultMiniProgram) : JSON.stringify({})
+          },"topcolor":"${topcolor || "#ff0000"}","data":${JSON.stringify(data)}}` 
+          console.log($data)
           const token = await this.app.getAccessToken() 
           if(!token) throw new Error(`Send -- pushTemplateMsg access_token获取失败${token}`)
           const url_ = util.format(this.app.apiUrl.template,this.app.apiDomain,token)  
           const res = await axios.post(url_,$data) 
-          return this.push(res)
+          return this.push(res) 
         } 
         
 }

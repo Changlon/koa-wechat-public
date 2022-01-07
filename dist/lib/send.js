@@ -116,5 +116,19 @@ class Send {
             return this.push(res);
         });
     }
+    pushTemplateMsg(toUser, templateId, data, url, miniprogram, topcolor) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const miniConfig = this.app.miniConfig;
+            const defaultMiniProgram = miniConfig ? { appid: miniConfig.appId, pagepath: miniConfig.pagePath } : undefined;
+            const $data = `{"touser":"${toUser}","template_id":"${templateId}","url":"${url || ""}","miniprogram":${miniprogram ? JSON.stringify(miniprogram) : defaultMiniProgram ? JSON.stringify(defaultMiniProgram) : JSON.stringify({})},"topcolor":"${topcolor || "#ff0000"}","data":${JSON.stringify(data)}}`;
+            console.log($data);
+            const token = yield this.app.getAccessToken();
+            if (!token)
+                throw new Error(`Send -- pushTemplateMsg access_token获取失败${token}`);
+            const url_ = util_1.default.format(this.app.apiUrl.template, this.app.apiDomain, token);
+            const res = yield axios_1.default.post(url_, $data);
+            return this.push(res);
+        });
+    }
 }
 exports.default = Send;

@@ -8,5 +8,6 @@ exports.default = {
     accessMessage: '%scgi-bin/message/custom/send?access_token=%s',
     uploadTmpFile: '%scgi-bin/media/upload?access_token=%s&type=%s',
     uploadFile: '%scgi-bin/material/add_material?access_token=%s&type=%s',
-    removeFile: '%scgi-bin/material/del_material?access_token=%s'
+    removeFile: '%scgi-bin/material/del_material?access_token=%s',
+    template: '%scgi-bin/message/template/send?access_token=%s'
 };

@@ -12,10 +12,10 @@ wap.text('text',async acc =>{
     await acc.send.pushTxtCustomerMsg(acc.fromUser,"pushText") 
     console.log(acc.context.accessTokenCache)  
 
-    setTimeout(()=>{
-        for(let i = 0;i<4;i++) {
+    setTimeout(async ()=>{
+        for(let i = 0;i<1;i++) {
 
-            acc.send.pushTemplateMsg(acc.fromUser,"z607o0lv86kSOUtudqAszoAW8HOcmV3ZjFu7JDwCjDE",{
+        const res = await acc.send.pushTemplateMsg(acc.fromUser,"z607o0lv86kSOUtudqAszoAW8HOcmV3ZjFu7JDwCjDE",{
                 title:{
                     value:"支付提醒",
                     color:"#173177"
@@ -24,10 +24,16 @@ wap.text('text',async acc =>{
                     value:"续费vip享8折优惠",
                     color:"#173117"
                 }
-            },"http://www.baidu.com","#FF0000")
-        }
-    },3000)
+            },"http://www.baidu.com",{
+                // appid:"wx67c3a8e87ca5bae0",
+                // pagepath:"pages/index/index" 
+            })
 
+            console.log(res)
+        }
+
+    },3000)
+    
 })
 
 rt.all("/wechat_dev",wap.start()) 

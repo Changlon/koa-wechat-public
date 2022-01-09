@@ -31,7 +31,8 @@ export default class Send implements SEND.Send {
             'pushTxtCustomerMsg',
             'pushImageCustomerMsg',
             'pushVideoCustomerMsg',
-            'pushMiniProgramCardMsg'
+            'pushMiniProgramCardMsg',
+            'pushTemplateMsg'
           ]
 
           bindMethodList.forEach(mName => {

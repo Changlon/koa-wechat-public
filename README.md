@@ -74,6 +74,7 @@ app.listen(3001)
 		- [6. 发送消息 & 客服接口](#head21)
 			- [ 自动回复](#head22)
 			- [ 客服消息推送](#head23)
+			- [ 模板消息推送](#head-template)
 		- [7. 用户接口](#head24)
 			- [ 获取用户信息](#head25)
 			- [ 上传永久文件](#head26)
@@ -320,6 +321,24 @@ acc
 |toUser|string|否|要推送用户的openid| |
 |miniConfig|object:{ title: string; appId: string; pagePath: string; thumbMediaId: string }|是|小程序配置信息|通过构造函数传入的 miniConfig|
 |params|object:{[key:string]:any}|是|设置打开小程序的路径后的参数||  
+
+
+### <span id = "head-template">模板消息推送</span> 
+
+
+- 推送文本消息
+```  send.pushTemplateMsg(toUser,templateId, data?, url?, miniprogram?,topcolor?)``` 
+
+参数说明： 
+
+|参数名|类型|可选|说明|
+|-|-|-|-|
+|toUser|string|否|要推送用户的openid| 
+|templateId|string|否|模板消息id|   
+|data|Object|是|模板数据对象 例:{User:{value,color}}|    
+|url|string|是|模板跳转链接|    
+|miniprogram|Object|是|模板小程序跳转配置 例: {appid,pagepath}|     
+|topcolor|string|是|模板消息顶部颜色|      
 
 ### <span id="head24">7. 用户接口</span>
 

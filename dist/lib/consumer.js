@@ -25,7 +25,7 @@ class Consumer {
             'getUserDetail'
         ];
         bindMethodList.forEach(mName => {
-            this[mName] = this[mName].bind(this);
+            this[mName] = this.app[mName] = this[mName].bind(this);
         });
     }
     getUserDetail(openid) {

@@ -8,6 +8,9 @@ import WechatApplication, {  Next, WechatApplicationConfig, Ctx, Stack, Applicat
 import { CryptoGraphyInterface } from 'cryptog'
 import CryptoGraphy from '../utils/cryptoGraphyUtil'
 import { EventType, MsgType, PatternType } from 'enum'
+import Send from './send'
+import { Material } from './material'
+import { Consumer } from './consumer'
 
 
 export default class WetchatPublic implements WechatApplication {
@@ -18,7 +21,10 @@ export default class WetchatPublic implements WechatApplication {
     encodingAESKey?: string
     apiDomain: string
     apiUrl: { [key: string]: any }
-    miniConfig: { [key: string]: any }
+    miniConfig: { [key: string]: any } 
+    send:Send 
+    material:Material 
+    consumer:Consumer 
     ctx: Ctx
     next: Next
     stack: Stack[]
@@ -30,6 +36,7 @@ export default class WetchatPublic implements WechatApplication {
     crypto:CryptoGraphyInterface
     menuHandler:()=>Promise<any>
     oauthHandler:(oauthData:any,ctx:Ctx)=> Promise<any>
+    [k:string]:any
 
     constructor (config:WechatApplicationConfig) {
       if (config) {
@@ -38,6 +45,11 @@ export default class WetchatPublic implements WechatApplication {
     }
 
     init (config: WechatApplicationConfig): void {
+
+      if(!config.appId || !config.appSecret || !config.token) {
+          throw new Error(`请保证 appId,appSecret,token参数的正确传入:${config.appId},${config.appSecret},${config.token}`)
+      }
+
       this.config = config
       this.token = config.token
       this.appId = config.appId
@@ -58,8 +70,11 @@ export default class WetchatPublic implements WechatApplication {
 
       this.encodingAESKey = config.encodingAESKey
       this.miniConfig = config.miniConfig
+      this.send = new Send(this,null,null) 
+      this.material = new Material(this) 
+      this.consumer = new Consumer(this) 
     }
-
+    
     start (): (ctx: Ctx, next?: Next) => any {
       return async (ctx, next) => {
         const req = ctx.request

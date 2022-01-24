@@ -35,8 +35,10 @@ export default class Send implements SEND.Send {
             'pushTemplateMsg'
           ]
 
-          bindMethodList.forEach(mName => {
-            this[mName] = this[mName].bind(this)
+          bindMethodList.forEach(mName => {  
+            mName.startsWith('push') ?
+             this[mName] = this.app[mName]  = this[mName].bind(this)   :  
+             this[mName] = this[mName].bind(this) 
           })
         }
 

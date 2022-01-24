@@ -18,6 +18,9 @@ const crypto_1 = __importDefault(require("crypto"));
 const accept_1 = __importDefault(require("./accept"));
 const wetchat_common_api_1 = __importDefault(require("./wetchat-common-api"));
 const cryptoGraphyUtil_1 = __importDefault(require("../utils/cryptoGraphyUtil"));
+const send_1 = __importDefault(require("./send"));
+const material_1 = require("./material");
+const consumer_1 = require("./consumer");
 class WetchatPublic {
     constructor(config) {
         if (config) {
@@ -25,6 +28,9 @@ class WetchatPublic {
         }
     }
     init(config) {
+        if (!config.appId || !config.appSecret || !config.token) {
+            throw new Error(`请保证 appId,appSecret,token参数的正确传入:${config.appId},${config.appSecret},${config.token}`);
+        }
         this.config = config;
         this.token = config.token;
         this.appId = config.appId;
@@ -44,6 +50,9 @@ class WetchatPublic {
         };
         this.encodingAESKey = config.encodingAESKey;
         this.miniConfig = config.miniConfig;
+        this.send = new send_1.default(this, null, null);
+        this.material = new material_1.Material(this);
+        this.consumer = new consumer_1.Consumer(this);
     }
     start() {
         return (ctx, next) => __awaiter(this, void 0, void 0, function* () {

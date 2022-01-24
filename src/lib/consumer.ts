@@ -18,7 +18,7 @@ export class Consumer implements ConsumerInterface {
       ]
 
       bindMethodList.forEach(mName => {
-        this[mName] = this[mName].bind(this)
+        this[mName] = this.app[mName] =  this[mName].bind(this)
       })
     }
 

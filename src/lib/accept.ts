@@ -51,6 +51,10 @@ function getBaseApplicationContext (xml:any) {
   const material = new Material(context)
   const consumer = new Consumer(context)
 
+  context.send = send 
+  context.material = material 
+  context.consumer = consumer 
+  
   return {
     context,
     msgId,

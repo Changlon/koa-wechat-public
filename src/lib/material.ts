@@ -9,7 +9,7 @@ import formData from 'form-data'
 export class Material implements MaterialInterface {
     app: WechatApplication
 
-    constructor (ctx) {
+    constructor (ctx:WechatApplication) {
       this.app = ctx
       this.bindToThis()
     }
@@ -22,7 +22,7 @@ export class Material implements MaterialInterface {
       ]
 
       bindMethodList.forEach(mName => {
-        this[mName] = this[mName].bind(this)
+        this[mName] = this.app[mName] =  this[mName].bind(this) 
       })
     }
 

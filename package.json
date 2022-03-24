@@ -20,7 +20,7 @@
   "scripts": {
     "dev": "nodemon -e ts --exec ts-node ./example/index.ts",
     "build": "rd /s/q dist && tsc",
-    "test": "mocha -r ts-node/register __tests__/*.test.ts"
+    "test": "mocha  -r ts-node/register __tests__/*.test.ts"
   },
   "dependencies": {
     "axios": "^0.25.0",

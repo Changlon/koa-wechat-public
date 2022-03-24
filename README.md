@@ -1,7 +1,14 @@
 <p align="center"><img src="/docs/logo_.png" alt="Koa middleware framework for wehchat" /> </p>
 
 # <span id="head1"> 一款基于Koa的微信公众号开发框架</span>
-![node version](https://img.shields.io/badge/node-v14.16.1-brightgreen.svg)  ![npm version](https://img.shields.io/badge/npm-0.1.0-blue.svg) ![in npm version](https://img.shields.io/badge/koa-^2.13.4-purple.svg)  ![typescript](https://img.shields.io/badge/typescript-^4.5.2-blue.svg) 
+[![NPM version](https://img.shields.io/npm/v/koa-wechat-public)](https://npmjs.org/package/koa-wechat-public) 
+
+[![GitHub issues](https://img.shields.io/github/issues/Changlon/koa-wechat-public)](https://github.com/Changlon/koa-wechat-public/issues)
+
+[![GitHub license](https://img.shields.io/github/license/Changlon/koa-wechat-public)](https://github.com/Changlon/koa-wechat-public/blob/master/LICENSE)
+
+[![GitHub stars](https://img.shields.io/github/stars/Changlon/koa-wechat-public)](https://github.com/Changlon/koa-wechat-public/stargazers)
+
 
 ## <span id="head2"> koa-wechat</span>
 ## <span id="head3"> 介绍</span>

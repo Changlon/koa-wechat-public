@@ -1,13 +1,7 @@
 <p align="center"><img src="/docs/logo_.png" alt="Koa middleware framework for wehchat" /> </p>
 
 # <span id="head1"> 一款基于Koa的微信公众号开发框架</span>
-[![NPM version](https://img.shields.io/npm/v/koa-wechat-public)](https://npmjs.org/package/koa-wechat-public) 
-
-[![GitHub issues](https://img.shields.io/github/issues/Changlon/koa-wechat-public)](https://github.com/Changlon/koa-wechat-public/issues)
-
-[![GitHub license](https://img.shields.io/github/license/Changlon/koa-wechat-public)](https://github.com/Changlon/koa-wechat-public/blob/master/LICENSE)
-
-[![GitHub stars](https://img.shields.io/github/stars/Changlon/koa-wechat-public)](https://github.com/Changlon/koa-wechat-public/stargazers)
+[![NPM version](https://img.shields.io/npm/v/koa-wechat-public)](https://npmjs.org/package/koa-wechat-public)  [![GitHub issues](https://img.shields.io/github/issues/Changlon/koa-wechat-public)](https://github.com/Changlon/koa-wechat-public/issues) [![GitHub license](https://img.shields.io/github/license/Changlon/koa-wechat-public)](https://github.com/Changlon/koa-wechat-public/blob/master/LICENSE) [![GitHub forks](https://img.shields.io/github/forks/Changlon/koa-wechat-public)](https://github.com/Changlon/koa-wechat-public/network) [![GitHub stars](https://img.shields.io/github/stars/Changlon/koa-wechat-public)](https://github.com/Changlon/koa-wechat-public/stargazers)
 
 
 ## <span id="head2"> koa-wechat</span>

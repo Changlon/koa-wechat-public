@@ -214,6 +214,7 @@ export default class WetchatPublic implements WechatApplication {
         if (!token) throw new Error(`WechatApplication - createMenu : access_token is invalid ${token}`)
         const url = util.format(this.apiUrl.createMenu, this.apiDomain, token)
         const res = await axios.post(url, JSON.stringify(menuViews))
+        if(res.data.errcode!==0) throw Error(`createMenu failed! Possible caused by : ${res.data.errmsg}`)
         return res.data
       }
 

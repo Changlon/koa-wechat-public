@@ -165,11 +165,15 @@ class WetchatPublic {
             const resStatus = yield axios_1.default.get(url);
             if (resStatus.status === 200) {
                 const data = resStatus.data;
+                if (!data)
+                    throw new Error(`koa-wechat-public getAccessToken (err) :  请检查公众号appid,secret 配置 !`);
                 this.accessTokenCache.access_token = data.access_token;
                 this.accessTokenCache.expires_time = new Date().getTime() + (parseInt(data.expires_in) - 200) * 1000;
                 return data.access_token;
             }
-            return '';
+            else {
+                throw new Error(`koa-wechat-public getAccessToken (err) :  请求异常请检查是否配置公众号白ip白名单 ：${resStatus}`);
+            }
         });
     }
     createMenu(menuViews) {
@@ -179,6 +183,8 @@ class WetchatPublic {
                 throw new Error(`WechatApplication - createMenu : access_token is invalid ${token}`);
             const url = util_1.default.format(this.apiUrl.createMenu, this.apiDomain, token);
             const res = yield axios_1.default.post(url, JSON.stringify(menuViews));
+            if (res.data.errcode !== 0)
+                throw Error(`createMenu failed! Possible caused by : ${res.data.errmsg}`);
             return res.data;
         });
         this.menuHandler = menuHandler;

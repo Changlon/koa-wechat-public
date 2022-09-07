@@ -73,6 +73,10 @@ class Send {
                 throw new Error(`Send -- pushTxtCustomerMsg:access_token获取失败${token}`);
             const url = util_1.default.format(this.app.apiUrl.accessMessage, this.app.apiDomain, token);
             const res = yield axios_1.default.post(url, $data);
+            if (res.data.errcode !== 0) {
+                console.log(res.data.errmsg);
+                throw new Error(res.data.errmsg);
+            }
             return this.push(res);
         });
     }
@@ -84,6 +88,10 @@ class Send {
                 throw new Error(`Send -- pushImageCustomerMsg:access_token获取失败${token}`);
             const url = util_1.default.format(this.app.apiUrl.accessMessage, this.app.apiDomain, token);
             const res = yield axios_1.default.post(url, $data);
+            if (res.data.errcode !== 0) {
+                console.log(res.data.errmsg);
+                throw new Error(res.data.errmsg);
+            }
             return this.push(res);
         });
     }
@@ -95,6 +103,10 @@ class Send {
                 throw new Error(`Send -- pushVideoCustomerMsg:access_token获取失败${token}`);
             const url = util_1.default.format(this.app.apiUrl.accessMessage, this.app.apiDomain, token);
             const res = yield axios_1.default.post(url, $data);
+            if (res.data.errcode !== 0) {
+                console.log(res.data.errmsg);
+                throw new Error(res.data.errmsg);
+            }
             return this.push(res);
         });
     }
@@ -116,6 +128,10 @@ class Send {
                 throw new Error(`Send -- pushMiniProgramCardMsg:access_token获取失败${token}`);
             const url = util_1.default.format(this.app.apiUrl.accessMessage, this.app.apiDomain, token);
             const res = yield axios_1.default.post(url, $data);
+            if (res.data.errcode !== 0) {
+                console.log(res.data.errmsg);
+                throw new Error(res.data.errmsg);
+            }
             return this.push(res);
         });
     }
@@ -129,6 +145,10 @@ class Send {
                 throw new Error(`Send -- pushTemplateMsg access_token获取失败 ${token}`);
             const url_ = util_1.default.format(this.app.apiUrl.template, this.app.apiDomain, token);
             const res = yield axios_1.default.post(url_, $data);
+            if (res.data.errcode !== 0) {
+                console.log(res.data.errmsg);
+                throw new Error(res.data.errmsg);
+            }
             return this.push(res);
         });
     }

@@ -129,56 +129,73 @@ export default class WetchatPublic implements WechatApplication {
 
     handle (): (ctx:Ctx, next?: Next) => Promise<any> {
       return async (ctx, next) => {
-        const req = ctx.request; let xml
-        if (req.query.encrypt_type === 'aes') {
-          // eslint-disable-next-line camelcase
-          const { msg_signature, timestamp, nonce } = req.query
-          const decodeXml = this.crypto.init({
-            msgSignature: msg_signature,
-            timestamp,
-            nonce
-          }).decryptMsg(req.body.xml.Encrypt[0])
-          Object.keys(decodeXml).forEach(key => {
-            decodeXml[key] = [decodeXml[key]]
-          })
-          xml = decodeXml
-        } else {
-          xml = req.body && req.body.xml
-        }
 
-        if (!xml) {
-          throw new Error(`
-               wechatApplication warn:  请使用中间件!
-               示例:
-               app.use(xmlParser())  
-               app.use(bodyParser()) 
-               app.use(wetchatApp.start()) 
-            `)
-        }
+        try {
+            const req = ctx.request; let xml
 
-        const fromUserName = xml.FromUserName && xml.FromUserName[0],
-              createtime = xml.CreateTime && xml.CreateTime[0]  
-         
-        //消息排重
-        if(!this.msgIdQueque.has(`${fromUserName}-${createtime}`)) { 
-          this.msgIdQueque.set(`${fromUserName}-${createtime}`,new Date().getTime())
-          this.ctx = ctx
-          this.next = next
-          const msgType = <string> (xml.MsgType[0]) + 'Handler'
-          await Promise.resolve(Handlers[msgType].call(this, xml))
+            if (!req.body) {
+              throw new Error(`
+                  wechatApplication warn:  请使用中间件!
+                  示例:
+                  app.use(xmlParser())  
+                  app.use(bodyParser()) 
+                  app.use(wetchatApp.start()) 
+                `)
+            }
+
+            if(!req.body.xml) {
+              throw new Error("koa-wechat-public:未解析到xml数据")
+            }
+
+            if (req.query.encrypt_type === 'aes') {
+              // eslint-disable-next-line camelcase
+              const { msg_signature, timestamp, nonce } = req.query
+              const decodeXml = this.crypto.init({
+                msgSignature: msg_signature,
+                timestamp,
+                nonce
+              }).decryptMsg(req.body.xml.Encrypt[0])
+              Object.keys(decodeXml).forEach(key => {
+                decodeXml[key] = [decodeXml[key]]
+              })
+              xml = decodeXml
+            } else {
+              xml = req.body && req.body.xml
+            }
+
+            if(!xml.FromUserName || !xml.CreateTime || !xml.FromUserName[0] || !xml.CreateTime[0]) {  
+              throw new Error("koa-wechat-public: 不是微信标准的请求报文") 
+            }
+            
+            const fromUserName = xml.FromUserName && xml.FromUserName[0],
+                  createtime = xml.CreateTime && xml.CreateTime[0]  
+
+            
+            //消息排重
+            if(!this.msgIdQueque.has(`${fromUserName}-${createtime}`)) { 
+              this.msgIdQueque.set(`${fromUserName}-${createtime}`,new Date().getTime())
+              this.ctx = ctx
+              this.next = next
+              const msgType = <string> (xml.MsgType[0]) + 'Handler'
+              await Promise.resolve(Handlers[msgType].call(this, xml))
+            }
+            
+            //清理key
+            const keyIter =  this.msgIdQueque.keys() 
+            let k_ =  keyIter.next()
+            while( !k_.done ) {  
+                if( (new Date().getTime() - this.msgIdQueque.get(k_.value))
+                  > ( 1000 * 15 ) 
+                ){
+                  this.msgIdQueque.delete(k_.value) 
+                }
+                k_ = keyIter.next()
+            }
+          
+        } catch (error) {
+           throw  new Error(`koa-wechat-public: 公众号消息异常 - ${error.message}`)
         }
         
-        //清理key
-        const keyIter =  this.msgIdQueque.keys() 
-        let k_ =  keyIter.next()
-        while( !k_.done ) {  
-            if( (new Date().getTime() - this.msgIdQueque.get(k_.value))
-              > ( 1000 * 15 ) 
-            ){
-              this.msgIdQueque.delete(k_.value) 
-            }
-            k_ = keyIter.next()
-        }
 
       }
     }

@@ -218,7 +218,7 @@ export default class WetchatPublic implements WechatApplication {
         const data = resStatus.data
         if(!data) throw new Error(`koa-wechat-public getAccessToken (err) :  请检查公众号appid,secret 配置 !`)
         this.accessTokenCache.access_token = data.access_token
-        this.accessTokenCache.expires_time = new Date().getTime() + (parseInt(data.expires_in) - 200) * 1000
+        this.accessTokenCache.expires_time = new Date().getTime() + data.expires_in * 1000
         return data.access_token
       }else{
         throw new Error(`koa-wechat-public getAccessToken (err) :  请求异常请检查是否配置公众号白ip白名单 ：${resStatus}`)

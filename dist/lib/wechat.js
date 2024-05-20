@@ -53,6 +53,7 @@ class WetchatPublic {
         this.send = new send_1.default(this, null, null);
         this.material = new material_1.Material(this);
         this.consumer = new consumer_1.Consumer(this);
+        this.xmlKey = config.xmlKey || "body";
     }
     start() {
         return (ctx, next) => __awaiter(this, void 0, void 0, function* () {
@@ -106,18 +107,10 @@ class WetchatPublic {
     handle() {
         return (ctx, next) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const req = ctx.request;
+                let req = ctx.request;
                 let xml;
-                if (!req.body) {
-                    throw new Error(`
-                  wechatApplication warn:  请使用中间件!
-                  示例:
-                  app.use(xmlParser())  
-                  app.use(bodyParser()) 
-                  app.use(wetchatApp.start()) 
-                `);
-                }
-                if (!req.body.xml) {
+                xml = req[this.xmlKey].xml ? req[this.xmlKey].xml : req[this.xmlKey];
+                if (!xml) {
                     throw new Error("koa-wechat-public:未解析到xml数据");
                 }
                 if (req.query.encrypt_type === 'aes') {

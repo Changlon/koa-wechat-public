@@ -135,8 +135,8 @@ export default class WetchatPublic implements WechatApplication {
         try {
             let req = ctx.request; let xml 
 
-            xml = req[this.xmlKey].xml ? req[this.xmlKey].xml : req[this.xmlKey] 
-            
+            xml = req[this.xmlKey].xml ?? req[this.xmlKey] 
+
             if(!xml) {
               throw new Error("koa-wechat-public:未解析到xml数据")
             }
@@ -148,15 +148,13 @@ export default class WetchatPublic implements WechatApplication {
                 msgSignature: msg_signature,
                 timestamp,
                 nonce
-              }).decryptMsg(req.body.xml.Encrypt[0])
+              }).decryptMsg(xml.Encrypt[0])
               Object.keys(decodeXml).forEach(key => {
                 decodeXml[key] = [decodeXml[key]]
               })
               xml = decodeXml
-            } else {
-              xml = req.body && req.body.xml
-            }
-
+            } 
+            
             if(!xml.FromUserName || !xml.CreateTime || !xml.FromUserName[0] || !xml.CreateTime[0]) {  
               throw new Error("koa-wechat-public: 不是微信标准的请求报文") 
             }

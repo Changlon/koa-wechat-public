@@ -37,6 +37,7 @@ export default class WetchatPublic implements WechatApplication {
     menuHandler:()=>Promise<any>
     oauthHandler:(oauthData:any,ctx:Ctx)=> Promise<any>
     [k:string]:any
+    xmlKey?:string
 
     constructor (config:WechatApplicationConfig) {
       if (config) {
@@ -73,6 +74,7 @@ export default class WetchatPublic implements WechatApplication {
       this.send = new Send(this,null,null) 
       this.material = new Material(this) 
       this.consumer = new Consumer(this) 
+      this.xmlKey = config.xmlKey || "body"
     }
     
     start (): (ctx: Ctx, next?: Next) => any {
@@ -131,19 +133,11 @@ export default class WetchatPublic implements WechatApplication {
       return async (ctx, next) => {
 
         try {
-            const req = ctx.request; let xml
+            let req = ctx.request; let xml 
 
-            if (!req.body) {
-              throw new Error(`
-                  wechatApplication warn:  请使用中间件!
-                  示例:
-                  app.use(xmlParser())  
-                  app.use(bodyParser()) 
-                  app.use(wetchatApp.start()) 
-                `)
-            }
-
-            if(!req.body.xml) {
+            xml = req[this.xmlKey].xml ? req[this.xmlKey].xml : req[this.xmlKey] 
+            
+            if(!xml) {
               throw new Error("koa-wechat-public:未解析到xml数据")
             }
 

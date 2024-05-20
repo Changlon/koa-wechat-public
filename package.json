@@ -1,6 +1,6 @@
 {
   "name": "koa-wechat-public",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "一款基于koa的微信公众号开发中间件",
   "main": "dist/index.js",
   "author": "changlon",
@@ -25,7 +25,8 @@
   "dependencies": {
     "axios": "^0.25.0",
     "crypto": "^1.0.1",
-    "form-data": "^4.0.0"
+    "form-data": "^4.0.0",
+    "xml2js": "0.6.2"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",

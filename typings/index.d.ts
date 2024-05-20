@@ -9,7 +9,6 @@ import { EventType, MsgType, PatternType, SceneType } from './enum'
 
 
 
-
  declare class WechatApplication {  
     config:WechatApplication.WechatApplicationConfig  
     token : string
@@ -153,6 +152,7 @@ import { EventType, MsgType, PatternType, SceneType } from './enum'
 }
 
 
+
 declare namespace WechatApplication {
 
     
@@ -176,6 +176,7 @@ declare namespace WechatApplication {
         },
         apiDomain?:string,
         apiUrl?:{[k:string]:any},
+        xmlKey?:string,
         [k:string]:any
      }
     
@@ -229,5 +230,7 @@ declare namespace WechatApplication {
     }
 
 }
+
+
 
 export =  WechatApplication

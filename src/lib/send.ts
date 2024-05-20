@@ -109,7 +109,7 @@ export default class Send implements SEND.Send {
             paramStr = paramStr.substring(0,paramStr.length-1)
           }
           if (!config) throw new Error(`Send -- pushMiniProgramCardMsg: 小程序配置信息缺失 --config ${config}`)
-          const $data = `{"touser":"${toUser}","msgtype":"miniprogrampage","miniprogrampage":{"title":"${config.title}","appid":"${config.appId}","pagepath":"${config.pagePath}${paramStr}","thumb_media_id":"${config.thumbMediaId || config.mediaId}"}}`
+          const $data = `{"touser":"${toUser}","msgtype":"miniprogrampage","miniprogrampage":{"title":"${config.title}","appid":"${config.appId}","pagepath":"${config.pagePath}${paramStr}","thumb_media_id":"${config.thumbMediaId }"}}`
           const token = await this.app.getAccessToken()
           if (!token) throw new Error(`Send -- pushMiniProgramCardMsg:access_token获取失败${token}`)
           const url = util.format(this.app.apiUrl.accessMessage, this.app.apiDomain, token)

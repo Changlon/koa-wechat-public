@@ -161,7 +161,7 @@ declare namespace WechatApplication {
     type Incomming_MsgType = MsgType 
     type Incomming_EventType = EventType
 
-    
+
 
     type WechatApplicationConfig  = {
         appId:string, 
@@ -228,11 +228,6 @@ declare namespace WechatApplication {
         ticket?:string,
         menuId?:string
     }
-
-
-
-
-    
 }
 
 

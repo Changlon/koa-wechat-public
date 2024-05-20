@@ -2,10 +2,10 @@
 
 //事件类型
 export const enum EventType {
-    SUBSCRIBE,
-    UNSUBSCRIBE,
-    SCAN ,
-    MENU
+    SUBSCRIBE = "subscribe",
+    UNSUBSCRIBE = "unsubscribe",
+    SCAN = "scan" ,
+    MENU = "menu"
 }
 
 

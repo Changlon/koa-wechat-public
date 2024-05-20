@@ -4,7 +4,7 @@ import {Send}  from './send'
 import { CryptoGraphyInterface } from './cryptog' 
 import { Material } from './material'
 import { Consumer } from './consumer'
-import { EventType, MsgType, PatternType, SceneType } from './enum'
+import { EventType, MsgType , PatternType, SceneType } from './enum'
 
 
 
@@ -156,12 +156,12 @@ import { EventType, MsgType, PatternType, SceneType } from './enum'
 declare namespace WechatApplication {
 
     
-     type Ctx = Application.BaseContext & Application.DefaultContext
-     type Next = Application.Next  
+    type Ctx = Application.BaseContext & Application.DefaultContext
+    type Next = Application.Next   
+    type Incomming_MsgType = MsgType 
+    type Incomming_EventType = EventType
 
-   
-     
-
+    
 
     type WechatApplicationConfig  = {
         appId:string, 
@@ -181,7 +181,7 @@ declare namespace WechatApplication {
      }
     
 
-     type Stack = { 
+    type Stack = { 
         type : MsgType , 
         handlers :  ((ctx:ApplicationCommonContext|ApplicationEventContext)=>any)[], 
         pattern ?:string | RegExp ,
@@ -229,6 +229,10 @@ declare namespace WechatApplication {
         menuId?:string
     }
 
+
+
+
+    
 }
 
 

@@ -11,11 +11,11 @@ export const enum EventType {
 
 //消息类型
 export const  enum MsgType{ 
-    TEXT,
-    IMAGE, 
-    VOICE,
-    VIDEO,
-    EVENT,  
+    TEXT = "text",
+    IMAGE = "image", 
+    VOICE = "voice",
+    VIDEO = "video",
+    EVENT = "event",  
 }
 
 //进入场景类型

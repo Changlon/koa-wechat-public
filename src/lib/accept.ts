@@ -73,6 +73,7 @@ export default {
   async eventHandler (xml:any) {
     const context = this
     const baseAcceptContext = getBaseApplicationContext.call(context, xml)
+    const msgType = MsgType.EVENT
     const eventKey = xml.EventKey ? xml.EventKey[0] : ''
     const ticket = xml.Ticket ? xml.Ticket[0] : ''
     const menuId = xml.MenuId ? xml.MenuId[0] : ''
@@ -83,7 +84,8 @@ export default {
       event,
       eventKey,
       ticket,
-      menuId
+      menuId,
+      msgType
     }
 
     let subscribeHandlers = []; let unsubscribeHandlers = []; let scanHandlers = []; let menuHandler = []

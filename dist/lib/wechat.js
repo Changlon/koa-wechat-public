@@ -106,10 +106,11 @@ class WetchatPublic {
     }
     handle() {
         return (ctx, next) => __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
                 let req = ctx.request;
                 let xml;
-                xml = req[this.xmlKey].xml ? req[this.xmlKey].xml : req[this.xmlKey];
+                xml = (_a = req[this.xmlKey].xml) !== null && _a !== void 0 ? _a : req[this.xmlKey];
                 if (!xml) {
                     throw new Error("koa-wechat-public:未解析到xml数据");
                 }
@@ -120,14 +121,11 @@ class WetchatPublic {
                         msgSignature: msg_signature,
                         timestamp,
                         nonce
-                    }).decryptMsg(req.body.xml.Encrypt[0]);
+                    }).decryptMsg(xml.Encrypt[0]);
                     Object.keys(decodeXml).forEach(key => {
                         decodeXml[key] = [decodeXml[key]];
                     });
                     xml = decodeXml;
-                }
-                else {
-                    xml = req.body && req.body.xml;
                 }
                 if (!xml.FromUserName || !xml.CreateTime || !xml.FromUserName[0] || !xml.CreateTime[0]) {
                     throw new Error("koa-wechat-public: 不是微信标准的请求报文");

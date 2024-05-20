@@ -1,6 +1,6 @@
 {
   "name": "koa-wechat-public",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "一款基于koa的微信公众号开发中间件",
   "main": "dist/index.js",
   "author": "changlon",

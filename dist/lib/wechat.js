@@ -195,7 +195,7 @@ class WetchatPublic {
     text(content, userHandler) {
         const patternType = Object.prototype.toString.call(content);
         const textContext = {
-            type: 0 /* TEXT */,
+            type: "text" /* TEXT */,
             handlers: [userHandler],
             pattern: content
         };
@@ -203,7 +203,7 @@ class WetchatPublic {
             textContext.patternType = "string" /* STRING */;
             for (let i = 0; i < this.stack.length; ++i) {
                 const context = this.stack[i];
-                if (context.type === 0 /* TEXT */ && content === context.pattern) {
+                if (context.type === "text" /* TEXT */ && content === context.pattern) {
                     context.handlers.push(userHandler);
                     return this;
                 }
@@ -222,12 +222,12 @@ class WetchatPublic {
     }
     image(hander) {
         const imageContext = {
-            type: 1 /* IMAGE */,
+            type: "image" /* IMAGE */,
             handlers: [hander]
         };
         for (let i = 0; i < this.stack.length; ++i) {
             const context = this.stack[i];
-            if (context.type === 1 /* IMAGE */) {
+            if (context.type === "image" /* IMAGE */) {
                 context.handlers.push(hander);
                 return this;
             }
@@ -237,12 +237,12 @@ class WetchatPublic {
     }
     video(handler) {
         const videoContext = {
-            type: 3 /* VIDEO */,
+            type: "video" /* VIDEO */,
             handlers: [handler]
         };
         for (let i = 0; i < this.stack.length; ++i) {
             const context = this.stack[i];
-            if (context.type === 3 /* VIDEO */) {
+            if (context.type === "video" /* VIDEO */) {
                 context.handlers.push(handler);
                 return this;
             }
@@ -252,12 +252,12 @@ class WetchatPublic {
     }
     voice(handler) {
         const voiceContext = {
-            type: 2 /* VOICE */,
+            type: "voice" /* VOICE */,
             handlers: [handler]
         };
         for (let i = 0; i < this.stack.length; ++i) {
             const context = this.stack[i];
-            if (context.type === 2 /* VOICE */) {
+            if (context.type === "voice" /* VOICE */) {
                 context.handlers.push(handler);
                 return this;
             }
@@ -267,13 +267,13 @@ class WetchatPublic {
     }
     subscribe(handler) {
         const subscribeContext = {
-            type: 4 /* EVENT */,
+            type: "event" /* EVENT */,
             handlers: [handler],
             eventType: 0 /* SUBSCRIBE */
         };
         for (let i = 0; i < this.stack.length; ++i) {
             const context = this.stack[i];
-            if (context.type === 4 /* EVENT */ && context.eventType === 0 /* SUBSCRIBE */) {
+            if (context.type === "event" /* EVENT */ && context.eventType === 0 /* SUBSCRIBE */) {
                 context.handlers.push(handler);
                 return this;
             }
@@ -283,13 +283,13 @@ class WetchatPublic {
     }
     unsubscribe(handler) {
         const unsubscribContext = {
-            type: 4 /* EVENT */,
+            type: "event" /* EVENT */,
             handlers: [handler],
             eventType: 1 /* UNSUBSCRIBE */
         };
         for (let i = 0; i < this.stack.length; ++i) {
             const context = this.stack[i];
-            if (context.type === 4 /* EVENT */ && context.eventType === 1 /* UNSUBSCRIBE */) {
+            if (context.type === "event" /* EVENT */ && context.eventType === 1 /* UNSUBSCRIBE */) {
                 context.handlers.push(handler);
                 return this;
             }
@@ -299,13 +299,13 @@ class WetchatPublic {
     }
     scan(handler) {
         const scanContext = {
-            type: 4 /* EVENT */,
+            type: "event" /* EVENT */,
             handlers: [handler],
             eventType: 2 /* SCAN */
         };
         for (let i = 0; i < this.stack.length; ++i) {
             const context = this.stack[i];
-            if (context.type === 4 /* EVENT */ && context.eventType === 2 /* SCAN */) {
+            if (context.type === "event" /* EVENT */ && context.eventType === 2 /* SCAN */) {
                 context.handlers.push(handler);
                 return this;
             }
@@ -315,13 +315,13 @@ class WetchatPublic {
     }
     menu(handler) {
         const menuContext = {
-            type: 4 /* EVENT */,
+            type: "event" /* EVENT */,
             handlers: [handler],
             eventType: 3 /* MENU */
         };
         for (let i = 0; i < this.stack.length; ++i) {
             const context = this.stack[i];
-            if (context.type === 4 /* EVENT */ && context.eventType === 3 /* MENU */) {
+            if (context.type === "event" /* EVENT */ && context.eventType === 3 /* MENU */) {
                 context.handlers.push(handler);
                 return this;
             }

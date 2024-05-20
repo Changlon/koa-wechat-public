@@ -65,6 +65,7 @@ exports.default = {
         return __awaiter(this, void 0, void 0, function* () {
             const context = this;
             const baseAcceptContext = getBaseApplicationContext.call(context, xml);
+            const msgType = "event" /* EVENT */;
             const eventKey = xml.EventKey ? xml.EventKey[0] : '';
             const ticket = xml.Ticket ? xml.Ticket[0] : '';
             const menuId = xml.MenuId ? xml.MenuId[0] : '';
@@ -72,14 +73,15 @@ exports.default = {
             const acceptEventContext = Object.assign(Object.assign({}, baseAcceptContext), { scene: eventKey && ticket ? "scan" /* SCAN */ : "normal" /* NORMAL */, event,
                 eventKey,
                 ticket,
-                menuId });
+                menuId,
+                msgType });
             let subscribeHandlers = [];
             let unsubscribeHandlers = [];
             let scanHandlers = [];
             let menuHandler = [];
             for (let i = 0; i < context.stack.length; ++i) {
                 const stackContext = context.stack[i];
-                if (stackContext.type === 4 /* EVENT */) {
+                if (stackContext.type === "event" /* EVENT */) {
                     if (stackContext.eventType === 0 /* SUBSCRIBE */) {
                         subscribeHandlers = subscribeHandlers.concat(stackContext.handlers);
                     }
@@ -115,11 +117,11 @@ exports.default = {
         return __awaiter(this, void 0, void 0, function* () {
             const context = this;
             const baseAcceptContext = getBaseApplicationContext.call(context, xml);
-            const acceptCommonContext = Object.assign(Object.assign({}, baseAcceptContext), { msgType: 0 /* TEXT */, content: xml.Content[0] });
+            const acceptCommonContext = Object.assign(Object.assign({}, baseAcceptContext), { msgType: "text" /* TEXT */, content: xml.Content[0] });
             let matchedRegExp = [];
             for (let i = 0; i < context.stack.length; ++i) {
                 const stackContext = this.stack[i];
-                if (stackContext.type === 0 /* TEXT */) {
+                if (stackContext.type === "text" /* TEXT */) {
                     const match = acceptCommonContext.content.match(stackContext.pattern);
                     if (stackContext.patternType === "string" /* STRING */ && match && match.length) {
                         return yield excuteHandler(context, acceptCommonContext, stackContext.handlers, 0);
@@ -137,10 +139,10 @@ exports.default = {
         return __awaiter(this, void 0, void 0, function* () {
             const context = this;
             const baseAcceptContext = getBaseApplicationContext.call(context, xml);
-            const acceptCommonContext = Object.assign(Object.assign({}, baseAcceptContext), { msgType: 1 /* IMAGE */, picUrl: xml.PicUrl[0], mediaId: xml.MediaId[0] });
+            const acceptCommonContext = Object.assign(Object.assign({}, baseAcceptContext), { msgType: "image" /* IMAGE */, picUrl: xml.PicUrl[0], mediaId: xml.MediaId[0] });
             let matchedPics = [];
             context.stack.forEach((stackContext) => {
-                if (stackContext.type === 1 /* IMAGE */) {
+                if (stackContext.type === "image" /* IMAGE */) {
                     matchedPics = matchedPics.concat(stackContext.handlers);
                 }
             });
@@ -152,10 +154,10 @@ exports.default = {
         return __awaiter(this, void 0, void 0, function* () {
             const context = this;
             const baseAcceptContext = getBaseApplicationContext.call(context, xml);
-            const acceptCommonContext = Object.assign(Object.assign({}, baseAcceptContext), { msgType: 3 /* VIDEO */, mediaId: xml.MediaId[0], thumbMediaId: xml.ThumbMediaId[0] });
+            const acceptCommonContext = Object.assign(Object.assign({}, baseAcceptContext), { msgType: "video" /* VIDEO */, mediaId: xml.MediaId[0], thumbMediaId: xml.ThumbMediaId[0] });
             let matchedVideos = [];
             context.stack.forEach((stackContext) => {
-                if (stackContext.type === 3 /* VIDEO */) {
+                if (stackContext.type === "video" /* VIDEO */) {
                     matchedVideos = matchedVideos.concat(stackContext.handlers);
                 }
             });
@@ -167,10 +169,10 @@ exports.default = {
         return __awaiter(this, void 0, void 0, function* () {
             const context = this;
             const baseAcceptContext = getBaseApplicationContext.call(context, xml);
-            const acceptCommonContext = Object.assign(Object.assign({}, baseAcceptContext), { msgType: 2 /* VOICE */, mediaId: xml.MediaId[0], format: xml.Format[0] });
+            const acceptCommonContext = Object.assign(Object.assign({}, baseAcceptContext), { msgType: "voice" /* VOICE */, mediaId: xml.MediaId[0], format: xml.Format[0] });
             let matchedVoices = [];
             context.stack.forEach((stackContext) => {
-                if (stackContext.type === 2 /* VOICE */) {
+                if (stackContext.type === "voice" /* VOICE */) {
                     matchedVoices = matchedVoices.concat(stackContext.handlers);
                 }
             });

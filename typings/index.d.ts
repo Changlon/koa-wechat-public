@@ -24,6 +24,9 @@ import { EventType, MsgType , PatternType, SceneType } from './enum'
         [key:string]:any 
     } 
 
+    send:Send 
+    material:Material 
+    consumer:Consumer 
 
     ctx :WechatApplication.Ctx
     next: WechatApplication.Next

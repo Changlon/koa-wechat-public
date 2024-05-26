@@ -82,16 +82,16 @@ exports.default = {
             for (let i = 0; i < context.stack.length; ++i) {
                 const stackContext = context.stack[i];
                 if (stackContext.type === "event" /* EVENT */) {
-                    if (stackContext.eventType === 0 /* SUBSCRIBE */) {
+                    if (stackContext.eventType === "subscribe" /* SUBSCRIBE */) {
                         subscribeHandlers = subscribeHandlers.concat(stackContext.handlers);
                     }
-                    else if (stackContext.eventType === 1 /* UNSUBSCRIBE */) {
+                    else if (stackContext.eventType === "unsubscribe" /* UNSUBSCRIBE */) {
                         unsubscribeHandlers = unsubscribeHandlers.concat(stackContext.handlers);
                     }
-                    else if (stackContext.eventType === 2 /* SCAN */) {
+                    else if (stackContext.eventType === "scan" /* SCAN */) {
                         scanHandlers = scanHandlers.concat(stackContext.handlers);
                     }
-                    else if (stackContext.eventType === 3 /* MENU */) {
+                    else if (stackContext.eventType === "menu" /* MENU */) {
                         menuHandler = menuHandler.concat(stackContext.handlers);
                     }
                 }

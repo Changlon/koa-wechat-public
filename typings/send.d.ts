@@ -36,12 +36,12 @@ export  declare class Send {
     pushVideoCustomerMsg(toUser:string,mediaId:string,thumbMediaId?:string,title?:string,desc?:string) :Promise<any> 
     
     /**发送小程序卡片 */
-    pushMiniProgramCardMsg(toUser:string,params?:{[k:string]:any},miniConfig?:{
+    pushMiniProgramCardMsg(toUser:string,miniConfig?:{
         title:string,
         appId:string,
         pagePath:string,
         thumbMediaId:string
-    }):Promise<any>
+    },params?:{[k:string]:any}):Promise<any>
     
     /** 推送模板消息 */
     pushTemplateMsg(toUser:string,templateId:string,data?:{[k:string]:any},url?:string,miniprogram?:{

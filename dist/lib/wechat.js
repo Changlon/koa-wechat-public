@@ -269,11 +269,11 @@ class WetchatPublic {
         const subscribeContext = {
             type: "event" /* EVENT */,
             handlers: [handler],
-            eventType: 0 /* SUBSCRIBE */
+            eventType: "subscribe" /* SUBSCRIBE */
         };
         for (let i = 0; i < this.stack.length; ++i) {
             const context = this.stack[i];
-            if (context.type === "event" /* EVENT */ && context.eventType === 0 /* SUBSCRIBE */) {
+            if (context.type === "event" /* EVENT */ && context.eventType === "subscribe" /* SUBSCRIBE */) {
                 context.handlers.push(handler);
                 return this;
             }
@@ -285,11 +285,11 @@ class WetchatPublic {
         const unsubscribContext = {
             type: "event" /* EVENT */,
             handlers: [handler],
-            eventType: 1 /* UNSUBSCRIBE */
+            eventType: "unsubscribe" /* UNSUBSCRIBE */
         };
         for (let i = 0; i < this.stack.length; ++i) {
             const context = this.stack[i];
-            if (context.type === "event" /* EVENT */ && context.eventType === 1 /* UNSUBSCRIBE */) {
+            if (context.type === "event" /* EVENT */ && context.eventType === "unsubscribe" /* UNSUBSCRIBE */) {
                 context.handlers.push(handler);
                 return this;
             }
@@ -301,11 +301,11 @@ class WetchatPublic {
         const scanContext = {
             type: "event" /* EVENT */,
             handlers: [handler],
-            eventType: 2 /* SCAN */
+            eventType: "scan" /* SCAN */
         };
         for (let i = 0; i < this.stack.length; ++i) {
             const context = this.stack[i];
-            if (context.type === "event" /* EVENT */ && context.eventType === 2 /* SCAN */) {
+            if (context.type === "event" /* EVENT */ && context.eventType === "scan" /* SCAN */) {
                 context.handlers.push(handler);
                 return this;
             }
@@ -317,11 +317,11 @@ class WetchatPublic {
         const menuContext = {
             type: "event" /* EVENT */,
             handlers: [handler],
-            eventType: 3 /* MENU */
+            eventType: "menu" /* MENU */
         };
         for (let i = 0; i < this.stack.length; ++i) {
             const context = this.stack[i];
-            if (context.type === "event" /* EVENT */ && context.eventType === 3 /* MENU */) {
+            if (context.type === "event" /* EVENT */ && context.eventType === "menu" /* MENU */) {
                 context.handlers.push(handler);
                 return this;
             }

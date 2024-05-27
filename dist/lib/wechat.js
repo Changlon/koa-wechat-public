@@ -71,7 +71,9 @@ class WetchatPublic {
         });
     }
     auth() {
-        return (ctx) => __awaiter(this, void 0, void 0, function* () {
+        return (ctx, next) => __awaiter(this, void 0, void 0, function* () {
+            this.ctx = ctx;
+            this.next = next;
             const req = ctx.request;
             const { signature, timestamp, nonce, echostr, code, state } = req.query;
             if (!code) {
@@ -84,10 +86,10 @@ class WetchatPublic {
                 return this.menuHandler ? yield Promise.resolve(this.menuHandler()) : undefined;
             }
             // 处理网页授权认证
-            yield this.handleWebPageOauth(code, state, ctx);
+            yield this.handleWebPageOauth(code, state, ctx, next);
         });
     }
-    handleWebPageOauth(code, state, ctx) {
+    handleWebPageOauth(code, state, ctx, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const appId = this.appId;
             const secret = this.appSecret;
@@ -97,7 +99,7 @@ class WetchatPublic {
             if (!data)
                 throw new Error(`用户获取token失败！${resData.data.errcode} : ${resData.data.errmsg}`);
             data.state = state;
-            return this.oauthHandler ? yield Promise.resolve(this.oauthHandler(data, ctx)) : ctx.body = "no oauthHandler";
+            return this.oauthHandler ? yield Promise.resolve(this.oauthHandler(data, ctx, next)) : ctx.body = "no oauthHandler";
         });
     }
     // eslint-disable-next-line camelcase
@@ -107,6 +109,8 @@ class WetchatPublic {
     handle() {
         return (ctx, next) => __awaiter(this, void 0, void 0, function* () {
             var _a;
+            this.ctx = ctx;
+            this.next = next;
             try {
                 let req = ctx.request;
                 let xml;

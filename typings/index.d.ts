@@ -150,7 +150,7 @@ import { EventType, MsgType , PatternType, SceneType } from './enum'
             openid:string,
             scope:string,
             state:string
-    },ctx:WechatApplication.Ctx)=>any) :WechatApplication  
+    },ctx:WechatApplication.Ctx,next:WechatApplication.Next)=>any) :WechatApplication  
     
 }
 

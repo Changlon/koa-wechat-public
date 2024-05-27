@@ -144,6 +144,8 @@ import { EventType, MsgType , PatternType, SceneType } from './enum'
      * @param handler 
      */
     oauth(handler:(oauthData:{
+            msgType:string,
+            event:string,
             access_token:string,
             expires_in:number,
             refresh_token:string,

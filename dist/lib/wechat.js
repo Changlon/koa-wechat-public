@@ -99,6 +99,8 @@ class WetchatPublic {
             if (!data)
                 throw new Error(`用户获取token失败！${resData.data.errcode} : ${resData.data.errmsg}`);
             data.state = state;
+            data.msgType = "event";
+            data.event = "oauth";
             return this.oauthHandler ? yield Promise.resolve(this.oauthHandler(data, ctx, next)) : ctx.body = "no oauthHandler";
         });
     }

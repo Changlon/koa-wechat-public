@@ -122,12 +122,14 @@ export default class WetchatPublic implements WechatApplication {
       const data = resData.status === 200 ? resData.data : undefined
       if (!data) throw new Error(`用户获取token失败！${resData.data.errcode} : ${resData.data.errmsg}`)
       data.state = state
+      data.msgType = "event"
+      data.event = "oauth"
       
       return this.oauthHandler ? await Promise.resolve(this.oauthHandler(data,ctx,next)) : ctx.body = "no oauthHandler"
     }
 
     // eslint-disable-next-line camelcase
-    oauth (handler: (oauthData: { access_token: string; expires_in: number; refresh_token: string; openid: string; scope: string; state: string },ctx:Ctx,next:Next) => any): WechatApplication {
+    oauth (handler: (oauthData: { msgType:string;event:string; access_token: string; expires_in: number; refresh_token: string; openid: string; scope: string; state: string },ctx:Ctx,next:Next) => any): WechatApplication {
       return (this.oauthHandler = handler) && this
     }
 

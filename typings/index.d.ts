@@ -34,6 +34,10 @@ import { EventType, MsgType , PatternType, SceneType } from './enum'
 
     stack: WechatApplication.Stack[]  
     crypto: CryptoGraphyInterface 
+    accessTokenCache:{
+        access_token:string,
+        expires_time:number
+    }
 
     constructor(config:WechatApplication.WechatApplicationConfig) 
 

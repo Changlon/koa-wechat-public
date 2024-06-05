@@ -46,7 +46,8 @@ class WetchatPublic {
         this.msgIdQueque = new Map();
         this.accessTokenCache = {
             access_token: '',
-            expires_time: 0
+            expires_time: 0,
+            expires_in: 0
         };
         this.encodingAESKey = config.encodingAESKey;
         this.miniConfig = config.miniConfig;
@@ -176,11 +177,32 @@ class WetchatPublic {
                 if (!data)
                     throw new Error(`koa-wechat-public getAccessToken (err) :  请检查公众号appid,secret 配置 !`);
                 this.accessTokenCache.access_token = data.access_token;
+                this.accessTokenCache.expires_in = data.expires_in;
                 this.accessTokenCache.expires_time = new Date().getTime() + data.expires_in * 1000;
                 return data.access_token;
             }
             else {
                 throw new Error(`koa-wechat-public getAccessToken (err) :  请求异常请检查是否配置公众号白ip白名单 ：${resStatus}`);
+            }
+        });
+    }
+    setAccessToken(access_token, expires_in) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.accessTokenCache.access_token = access_token;
+            this.accessTokenCache.expires_time = new Date().getTime() + expires_in * 1000;
+            this.accessTokenCache.expires_in = expires_in;
+        });
+    }
+    checkAccessToken() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const currentTime = new Date().getTime();
+            if (this.accessTokenCache.access_token &&
+                this.accessTokenCache.expires_time &&
+                this.accessTokenCache.expires_time > currentTime) {
+                return true;
+            }
+            else {
+                return false;
             }
         });
     }

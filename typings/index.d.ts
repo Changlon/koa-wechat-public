@@ -34,9 +34,11 @@ import { EventType, MsgType , PatternType, SceneType } from './enum'
 
     stack: WechatApplication.Stack[]  
     crypto: CryptoGraphyInterface 
+   
     accessTokenCache:{
         access_token:string,
-        expires_time:number
+        expires_time:number,
+        expires_in:number
     }
 
     constructor(config:WechatApplication.WechatApplicationConfig) 
@@ -72,6 +74,18 @@ import { EventType, MsgType , PatternType, SceneType } from './enum'
      */
     getAccessToken():Promise<string> 
      
+    /**
+     * 设置access_token
+     * @param access_token 
+     * @param expires_in 
+     */
+    setAccessToken(access_token:string,expires_in:number) :void 
+    
+
+    /**
+     * 检测access_token
+     */
+    checkAccessToken():Promise<boolean>
 
 
     /**

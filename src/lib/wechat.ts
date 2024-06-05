@@ -31,7 +31,8 @@ export default class WetchatPublic implements WechatApplication {
     msgIdQueque:Map<string,number>
     accessTokenCache:{
       access_token:string,
-      expires_time:number
+      expires_time:number,
+      expires_in:number
     }
     crypto:CryptoGraphyInterface
     menuHandler:()=>Promise<any>
@@ -66,7 +67,8 @@ export default class WetchatPublic implements WechatApplication {
       this.msgIdQueque = new Map()
       this.accessTokenCache = { 
         access_token:'',
-        expires_time:0
+        expires_time:0,
+        expires_in:0
       }
 
       this.encodingAESKey = config.encodingAESKey
@@ -200,7 +202,6 @@ export default class WetchatPublic implements WechatApplication {
     async getAccessToken () {
       const currentTime = new Date().getTime()
       const url = util.format(this.apiUrl.accessTokenApi, this.apiDomain, this.appId, this.appSecret) 
-
       if( 
           this.accessTokenCache.access_token &&  
           this.accessTokenCache.expires_time && 
@@ -215,10 +216,32 @@ export default class WetchatPublic implements WechatApplication {
         const data = resStatus.data
         if(!data) throw new Error(`koa-wechat-public getAccessToken (err) :  请检查公众号appid,secret 配置 !`)
         this.accessTokenCache.access_token = data.access_token
+        this.accessTokenCache.expires_in = data.expires_in
         this.accessTokenCache.expires_time = new Date().getTime() + data.expires_in * 1000
         return data.access_token
       }else{
         throw new Error(`koa-wechat-public getAccessToken (err) :  请求异常请检查是否配置公众号白ip白名单 ：${resStatus}`)
+      }
+    }
+
+
+    async setAccessToken(access_token:string,expires_in:number) { 
+      this.accessTokenCache.access_token = access_token
+      this.accessTokenCache.expires_time = new Date().getTime() + expires_in * 1000
+      this.accessTokenCache.expires_in  = expires_in
+    }
+
+    async checkAccessToken() {
+      const currentTime = new Date().getTime()
+      if( 
+        this.accessTokenCache.access_token &&  
+        this.accessTokenCache.expires_time && 
+        this.accessTokenCache.expires_time > currentTime 
+        
+      ) {
+        return true
+      }else {
+        return false
       }
     }
 

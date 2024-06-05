@@ -6,7 +6,8 @@ export const enum EventType {
     UNSUBSCRIBE = "unsubscribe",
     SCAN = "scan" ,
     MENU = "menu",
-    OAUTH = "oauth"
+    OAUTH = "oauth",
+    CLICK ="click"
 }
 
 

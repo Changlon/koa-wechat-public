@@ -7,7 +7,8 @@ export const enum EventType {
     SCAN = "scan" ,
     MENU = "menu",
     OAUTH = "oauth",
-    CLICK ="click"
+    CLICK ="click",
+    VIEW = "view"
 }
 
 

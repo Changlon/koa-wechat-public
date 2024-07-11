@@ -200,6 +200,14 @@ declare namespace WechatApplication {
         apiDomain?:string,
         apiUrl?:{[k:string]:any},
         xmlKey?:string,
+        redis?:{
+            port: number,
+            host: string,
+            username?:string
+            password?: string,
+            db?: number,
+        }
+        
         [k:string]:any
      }
     

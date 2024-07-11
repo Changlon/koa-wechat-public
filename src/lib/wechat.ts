@@ -11,7 +11,7 @@ import { EventType, MsgType, PatternType } from 'enum'
 import Send from './send'
 import { Material } from './material'
 import { Consumer } from './consumer'
-
+import Redis from 'ioredis'
 
 export default class WetchatPublic implements WechatApplication {
     config: WechatApplicationConfig
@@ -39,6 +39,8 @@ export default class WetchatPublic implements WechatApplication {
     oauthHandler:(oauthData:any,ctx:Ctx,next:Next)=> Promise<any>
     [k:string]:any
     xmlKey?:string
+    redis?:Redis
+
 
     constructor (config:WechatApplicationConfig) {
       if (config) {
@@ -77,6 +79,12 @@ export default class WetchatPublic implements WechatApplication {
       this.material = new Material(this) 
       this.consumer = new Consumer(this) 
       this.xmlKey = config.xmlKey || "body"
+
+      // 增加redis缓存
+      if(config.redis) {
+        this.redis = new Redis(config.redis)
+      }
+      
     }
     
     start (): (ctx: Ctx, next?: Next) => any {
@@ -202,11 +210,18 @@ export default class WetchatPublic implements WechatApplication {
     async getAccessToken () {
       const currentTime = new Date().getTime()
       const url = util.format(this.apiUrl.accessTokenApi, this.apiDomain, this.appId, this.appSecret) 
+      // 在redis缓存中获取
+      if(this.redis) {
+        let access_token = await this.redis.get(`koa-wechat-public:accesstoken:${this.appId}`)
+        if(access_token) {
+          return access_token
+        }
+      }
+
       if( 
           this.accessTokenCache.access_token &&  
           this.accessTokenCache.expires_time && 
           this.accessTokenCache.expires_time > currentTime 
-          
         ) {
           return this.accessTokenCache.access_token
         }
@@ -218,6 +233,9 @@ export default class WetchatPublic implements WechatApplication {
         this.accessTokenCache.access_token = data.access_token
         this.accessTokenCache.expires_in = data.expires_in
         this.accessTokenCache.expires_time = new Date().getTime() + data.expires_in * 1000
+        if(this.redis) {
+          await this.redis.set(`koa-wechat-public:accesstoken:${this.appId}`,data.access_token,"EX",data.expires_in)
+        }
         return data.access_token
       }else{
         throw new Error(`koa-wechat-public getAccessToken (err) :  请求异常请检查是否配置公众号白ip白名单 ：${resStatus}`)
@@ -226,6 +244,9 @@ export default class WetchatPublic implements WechatApplication {
 
 
     async setAccessToken(access_token:string,expires_in:number) { 
+      if(this.redis) {
+        await this.redis.set(`koa-wechat-public:accesstoken:${this.appId}`,access_token,"EX",expires_in)
+      }
       this.accessTokenCache.access_token = access_token
       this.accessTokenCache.expires_time = new Date().getTime() + expires_in * 1000
       this.accessTokenCache.expires_in  = expires_in
@@ -233,6 +254,16 @@ export default class WetchatPublic implements WechatApplication {
 
     async checkAccessToken() {
       const currentTime = new Date().getTime()
+
+      if(this.redis) {
+        let access_token = await this.redis.get(`koa-wechat-public:accesstoken:${this.appId}`)
+        if(access_token) {
+          return true
+        }else {
+          return false
+        }
+      }
+
       if( 
         this.accessTokenCache.access_token &&  
         this.accessTokenCache.expires_time && 

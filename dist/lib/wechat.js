@@ -21,6 +21,7 @@ const cryptoGraphyUtil_1 = __importDefault(require("../utils/cryptoGraphyUtil"))
 const send_1 = __importDefault(require("./send"));
 const material_1 = require("./material");
 const consumer_1 = require("./consumer");
+const ioredis_1 = __importDefault(require("ioredis"));
 class WetchatPublic {
     constructor(config) {
         if (config) {
@@ -55,6 +56,10 @@ class WetchatPublic {
         this.material = new material_1.Material(this);
         this.consumer = new consumer_1.Consumer(this);
         this.xmlKey = config.xmlKey || "body";
+        // 增加redis缓存
+        if (config.redis) {
+            this.redis = new ioredis_1.default(config.redis);
+        }
     }
     start() {
         return (ctx, next) => __awaiter(this, void 0, void 0, function* () {
@@ -166,6 +171,13 @@ class WetchatPublic {
         return __awaiter(this, void 0, void 0, function* () {
             const currentTime = new Date().getTime();
             const url = util_1.default.format(this.apiUrl.accessTokenApi, this.apiDomain, this.appId, this.appSecret);
+            // 在redis缓存中获取
+            if (this.redis) {
+                let access_token = yield this.redis.get(`koa-wechat-public:accesstoken:${this.appId}`);
+                if (access_token) {
+                    return access_token;
+                }
+            }
             if (this.accessTokenCache.access_token &&
                 this.accessTokenCache.expires_time &&
                 this.accessTokenCache.expires_time > currentTime) {
@@ -179,6 +191,9 @@ class WetchatPublic {
                 this.accessTokenCache.access_token = data.access_token;
                 this.accessTokenCache.expires_in = data.expires_in;
                 this.accessTokenCache.expires_time = new Date().getTime() + data.expires_in * 1000;
+                if (this.redis) {
+                    yield this.redis.set(`koa-wechat-public:accesstoken:${this.appId}`, data.access_token, "EX", data.expires_in);
+                }
                 return data.access_token;
             }
             else {
@@ -188,6 +203,9 @@ class WetchatPublic {
     }
     setAccessToken(access_token, expires_in) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (this.redis) {
+                yield this.redis.set(`koa-wechat-public:accesstoken:${this.appId}`, access_token, "EX", expires_in);
+            }
             this.accessTokenCache.access_token = access_token;
             this.accessTokenCache.expires_time = new Date().getTime() + expires_in * 1000;
             this.accessTokenCache.expires_in = expires_in;
@@ -196,6 +214,15 @@ class WetchatPublic {
     checkAccessToken() {
         return __awaiter(this, void 0, void 0, function* () {
             const currentTime = new Date().getTime();
+            if (this.redis) {
+                let access_token = yield this.redis.get(`koa-wechat-public:accesstoken:${this.appId}`);
+                if (access_token) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
             if (this.accessTokenCache.access_token &&
                 this.accessTokenCache.expires_time &&
                 this.accessTokenCache.expires_time > currentTime) {

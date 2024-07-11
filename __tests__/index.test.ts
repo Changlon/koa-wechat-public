@@ -31,6 +31,26 @@ describe("测试主模块",()=>{
             expect(wechat.consumer).to.be.instanceOf(Consumer)
         })
 
+        it("测试aceess_token缓存方案",(done)=>{
+            const wechat = new WechatPublic({
+                appId:"wx3ace0c0fa2f4cab0",
+                appSecret:"8ea32e13460637765fb65a5e48b7c023",
+                token:"changlon",
+                redis:{
+                    port: 6379,
+                    host: '127.0.0.1',
+                    password: '',
+                    db: 2,
+                }
+            })
+            wechat.getAccessToken()
+            .then(res => {
+                console.log(res)
+                expect(res).not.to.be.instanceOf(String)
+                done()
+            })
+
+        })
     })
    
 
